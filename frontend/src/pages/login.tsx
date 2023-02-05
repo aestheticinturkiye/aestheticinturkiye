@@ -10,11 +10,11 @@ const Login = () => {
   const router = useRouter();
   const reloadSession = () => {};
   useEffect(() => {
-    if (session?.user?.username) {
+    if (session?.user?.name === "admin" /* CHANGE IT!!!!*/) {
       router.push("/profile");
       return;
     } else if (session?.user) {
-      router.push("/offer-form");
+      router.push("/user-form");
     }
   }, [session?.user]);
 
