@@ -41,7 +41,7 @@ async function main() {
       //console.log("first", session?.user?.id);
       const sessionCopy = session;
       console.log("sessionCopy", sessionCopy);
-      console.log("sessionCopyuser", sessionCopy["user"]["id"];
+      //console.log("sessionCopyuser", sessionCopy["user"]["id"];
 
       return {
         session,
