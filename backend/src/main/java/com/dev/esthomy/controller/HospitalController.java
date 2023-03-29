@@ -22,7 +22,7 @@ public class HospitalController {
     @GetMapping
     public ResponseEntity<HospitalListResponse> listAll()
     {
-        return ResponseEntity.ok(hospitalService.listAll());
+        return ResponseEntity.ok().body(hospitalService.listAll());
     }
 
 }
