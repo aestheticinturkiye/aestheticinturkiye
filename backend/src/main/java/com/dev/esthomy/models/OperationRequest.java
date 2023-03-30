@@ -1,5 +1,6 @@
 package com.dev.esthomy.models;
 
+import com.dev.esthomy.validation.annotations.ValidateEmail;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,6 +22,8 @@ public class OperationRequest {
     private String id;
 
     private String clientName;
+
+    @ValidateEmail
     private String email;
     private String phoneNumber;
     private String country;
