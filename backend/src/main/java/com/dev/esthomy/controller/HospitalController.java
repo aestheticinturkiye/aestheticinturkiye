@@ -1,5 +1,6 @@
 package com.dev.esthomy.controller;
 
+import com.dev.esthomy.converter.HospitalConverter;
 import com.dev.esthomy.models.request.CreateHospitalRequest;
 import com.dev.esthomy.models.response.CreateHospitalResponse;
 import com.dev.esthomy.models.response.HospitalListResponse;
@@ -14,15 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class HospitalController {
     private final HospitalService hospitalService;
 
+    private final HospitalConverter hospitalConverter;
+
     @PostMapping
     public ResponseEntity<CreateHospitalResponse> create(@RequestBody CreateHospitalRequest request){
-        return ResponseEntity.ok().body(hospitalService.create(request));
+
+        return ResponseEntity.ok().body(hospitalConverter.toResponse(hospitalService.create(request)));
     }
 
     @GetMapping
     public ResponseEntity<HospitalListResponse> listAll()
     {
-        return ResponseEntity.ok(hospitalService.listAll());
+        return ResponseEntity.ok().body(hospitalConverter.toResponseList(hospitalService.listAll()));
     }
 
 }

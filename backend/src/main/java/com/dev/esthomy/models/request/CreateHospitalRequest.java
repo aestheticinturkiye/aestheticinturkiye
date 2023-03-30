@@ -8,4 +8,5 @@ import lombok.Data;
 public class CreateHospitalRequest {
     private String name;
     private String location;
+
 }
