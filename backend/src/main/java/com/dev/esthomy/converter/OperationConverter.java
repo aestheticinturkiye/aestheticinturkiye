@@ -1,15 +1,14 @@
 package com.dev.esthomy.converter;
 
 import com.dev.esthomy.dto.OperationRequestDto;
-import com.dev.esthomy.models.Hospital;
 import com.dev.esthomy.models.OperationRequest;
-import com.dev.esthomy.models.request.OperationRequestRequest;
-import com.dev.esthomy.models.response.OperationRequestResponse;
+import com.dev.esthomy.models.request.CreateOperationRequest;
+import com.dev.esthomy.models.response.CreateOperationRequestResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OperationConverter {
-    public OperationRequest toModel(OperationRequestRequest request) {
+    public OperationRequest toModel(CreateOperationRequest request) {
         return OperationRequest.builder()
                 .clientName(request.getClientName())
                 .email(request.getEmail())
@@ -30,9 +29,9 @@ public class OperationConverter {
                 .build();
     }
 
-    public OperationRequestResponse toResponse(OperationRequestDto operationRequestDto)
+    public CreateOperationRequestResponse toResponse(OperationRequestDto operationRequestDto)
     {
-       return OperationRequestResponse.builder()
+       return CreateOperationRequestResponse.builder()
                 .clientName(operationRequestDto.getClientName())
                .age(operationRequestDto.getAge())
                 .build();

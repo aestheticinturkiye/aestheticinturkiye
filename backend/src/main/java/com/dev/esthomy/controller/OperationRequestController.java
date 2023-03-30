@@ -1,8 +1,8 @@
 package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.OperationConverter;
-import com.dev.esthomy.models.request.OperationRequestRequest;
-import com.dev.esthomy.models.response.OperationRequestResponse;
+import com.dev.esthomy.models.request.CreateOperationRequest;
+import com.dev.esthomy.models.response.CreateOperationRequestResponse;
 import com.dev.esthomy.service.OperationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class OperationRequestController {
     private final OperationConverter operationConverter;
 
     @PostMapping
-   public ResponseEntity<OperationRequestResponse> create (@RequestBody OperationRequestRequest request) {
+   public ResponseEntity<CreateOperationRequestResponse> create (@RequestBody CreateOperationRequest request) {
       return ResponseEntity.ok().body(
               operationConverter.toResponse(
                       operationRequestService.create(request)));

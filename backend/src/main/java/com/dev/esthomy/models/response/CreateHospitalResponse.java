@@ -7,4 +7,5 @@ import lombok.Data;
 @Builder
 public class CreateHospitalResponse {
     private String name;
+    private String location;
 }
