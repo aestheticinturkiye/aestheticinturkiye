@@ -1,4 +1,4 @@
-package com.dev.esthomy.models.request;
+package com.dev.esthomy.dto.request;
 
 import lombok.Builder;
 import lombok.Data;

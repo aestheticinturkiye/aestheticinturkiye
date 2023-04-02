@@ -2,8 +2,8 @@ package com.dev.esthomy.converter;
 
 import com.dev.esthomy.dto.OperationRequestDto;
 import com.dev.esthomy.models.OperationRequest;
-import com.dev.esthomy.models.request.CreateOperationRequest;
-import com.dev.esthomy.models.response.CreateOperationRequestResponse;
+import com.dev.esthomy.dto.request.CreateOperationRequest;
+import com.dev.esthomy.dto.response.CreateOperationRequestResponse;
 import org.springframework.stereotype.Component;
 
 @Component

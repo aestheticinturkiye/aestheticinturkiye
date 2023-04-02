@@ -1,9 +1,10 @@
-package com.dev.esthomy.validation.annotations;
+package com.dev.esthomy.validator.aspect;
 
-import com.dev.esthomy.validation.validators.EmailValidator;
+import com.dev.esthomy.validator.EmailValidator;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import jakarta.validation.ReportAsSingleViolation;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -16,6 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = EmailValidator.class)
 @Documented
+@ReportAsSingleViolation
 public @interface ValidateEmail {
     String message() default "Invalid email address";
 

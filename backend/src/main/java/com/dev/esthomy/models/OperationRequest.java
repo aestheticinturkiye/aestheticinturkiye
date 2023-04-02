@@ -1,6 +1,6 @@
 package com.dev.esthomy.models;
 
-import com.dev.esthomy.validation.annotations.ValidateEmail;
+import com.dev.esthomy.validator.aspect.ValidateEmail;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

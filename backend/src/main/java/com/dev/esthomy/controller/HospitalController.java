@@ -1,9 +1,9 @@
 package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.HospitalConverter;
-import com.dev.esthomy.models.request.CreateHospitalRequest;
-import com.dev.esthomy.models.response.CreateHospitalResponse;
-import com.dev.esthomy.models.response.HospitalListResponse;
+import com.dev.esthomy.dto.request.CreateHospitalRequest;
+import com.dev.esthomy.dto.response.CreateHospitalResponse;
+import com.dev.esthomy.dto.response.HospitalListResponse;
 import com.dev.esthomy.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

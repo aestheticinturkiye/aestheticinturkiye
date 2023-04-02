@@ -2,7 +2,7 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.converter.HospitalConverter;
 import com.dev.esthomy.dto.HospitalDto;
-import com.dev.esthomy.models.request.CreateHospitalRequest;
+import com.dev.esthomy.dto.request.CreateHospitalRequest;
 import com.dev.esthomy.repository.HospitalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
