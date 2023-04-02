@@ -1,4 +1,4 @@
-package com.dev.esthomy.models.response;
+package com.dev.esthomy.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

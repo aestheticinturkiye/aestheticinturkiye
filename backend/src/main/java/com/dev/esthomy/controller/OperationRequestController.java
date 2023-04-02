@@ -1,8 +1,8 @@
 package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.OperationConverter;
-import com.dev.esthomy.models.request.CreateOperationRequest;
-import com.dev.esthomy.models.response.CreateOperationRequestResponse;
+import com.dev.esthomy.dto.request.CreateOperationRequest;
+import com.dev.esthomy.dto.response.CreateOperationRequestResponse;
 import com.dev.esthomy.service.OperationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

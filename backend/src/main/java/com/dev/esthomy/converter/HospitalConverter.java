@@ -2,9 +2,9 @@ package com.dev.esthomy.converter;
 
 import com.dev.esthomy.dto.HospitalDto;
 import com.dev.esthomy.models.Hospital;
-import com.dev.esthomy.models.request.CreateHospitalRequest;
-import com.dev.esthomy.models.response.CreateHospitalResponse;
-import com.dev.esthomy.models.response.HospitalListResponse;
+import com.dev.esthomy.dto.request.CreateHospitalRequest;
+import com.dev.esthomy.dto.response.CreateHospitalResponse;
+import com.dev.esthomy.dto.response.HospitalListResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

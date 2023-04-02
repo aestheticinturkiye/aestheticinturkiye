@@ -2,7 +2,7 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.converter.OperationConverter;
 import com.dev.esthomy.dto.OperationRequestDto;
-import com.dev.esthomy.models.request.CreateOperationRequest;
+import com.dev.esthomy.dto.request.CreateOperationRequest;
 import com.dev.esthomy.repository.OperationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
