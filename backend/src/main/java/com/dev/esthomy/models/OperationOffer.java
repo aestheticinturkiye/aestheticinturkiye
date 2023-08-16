@@ -1,8 +1,5 @@
 package com.dev.esthomy.models;
 
-import com.dev.esthomy.validator.aspect.ValidateEmail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationRequest {
-
+public class OperationOffer {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name ="UUID",strategy = "org.hibernate.id.UUIDGenerator")
@@ -27,11 +20,17 @@ public class OperationRequest {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id",nullable = false)
-    @JsonIgnoreProperties("operationRequests")
-    private Account userAccount;
+    private Account account;
 
-    @OneToMany(mappedBy = "operationRequest",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    private List<OperationOffer> operationOfferList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "hospital_id",nullable = false)
+    private Hospital hospital;
 
-    private AestheticType aestheticType;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "operation_id",nullable = false)
+    private OperationRequest operationRequest;
+
+    private Boolean isApproved = false;
+
+    //price-description-broker-buraya mi ?
 }

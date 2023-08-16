@@ -1,39 +1,34 @@
 package com.dev.esthomy.converter;
 
 import com.dev.esthomy.dto.OperationRequestDto;
+import com.dev.esthomy.models.Account;
 import com.dev.esthomy.models.OperationRequest;
-import com.dev.esthomy.dto.request.CreateOperationRequest;
+import com.dev.esthomy.dto.request.operationRequest.CreateOperationRequest;
 import com.dev.esthomy.dto.response.CreateOperationRequestResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OperationConverter {
-    public OperationRequest toModel(CreateOperationRequest request) {
+    public OperationRequest toModel(CreateOperationRequest request , Account userAccount) {
         return OperationRequest.builder()
-                .clientName(request.getClientName())
-                .email(request.getEmail())
-                .phoneNumber(request.getPhoneNumber())
-                .country(request.getCountry())
-                .age(request.getAge())
+                .userAccount(userAccount)
+                .aestheticType(request.getAestheticType())
                 .build();
     }
 
-    public OperationRequestDto toDto(OperationRequest operationRequest)
+    public OperationRequestDto toDto(OperationRequest operationRequest,Account account)
     {
         return OperationRequestDto.builder()
-                .clientName(operationRequest.getClientName())
-                .email(operationRequest.getEmail())
-                .phoneNumber(operationRequest.getPhoneNumber())
-                .country(operationRequest.getCountry())
-                .age(operationRequest.getAge())
+                .userAccount(account)
+                .aestheticType(operationRequest.getAestheticType())
                 .build();
     }
 
     public CreateOperationRequestResponse toResponse(OperationRequestDto operationRequestDto)
     {
        return CreateOperationRequestResponse.builder()
-                .clientName(operationRequestDto.getClientName())
-               .age(operationRequestDto.getAge())
+               .userAccount(operationRequestDto.getUserAccount())
+               .aestheticType(operationRequestDto.getAestheticType())
                 .build();
     }
 }

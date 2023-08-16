@@ -27,6 +27,6 @@ public class Hospital {
     private Boolean isActive;
     // Bir hospital birden fazla preRequest bulundurabilir.
     @OneToMany(mappedBy = "hospital",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    private List<PreRequest> preRequests = new ArrayList<>();
+    private List<OperationOffer> operationOffers = new ArrayList<>();
 
 }

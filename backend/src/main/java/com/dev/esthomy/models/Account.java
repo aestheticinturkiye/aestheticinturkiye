@@ -1,5 +1,7 @@
 package com.dev.esthomy.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +36,8 @@ public class Account {
     private String email;
 
     // Bir user birden fazla preRequest bulundurabilir.
-    @OneToMany(mappedBy = "account",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    private List<PreRequest> preRequests = new ArrayList<>();
+    @JsonIgnoreProperties("userAccount")
+    @OneToMany(mappedBy = "userAccount",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private List<OperationRequest> operationRequests = new ArrayList<>();
 
 }
