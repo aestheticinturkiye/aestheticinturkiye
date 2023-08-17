@@ -1,6 +1,7 @@
 package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.HospitalConverter;
+import com.dev.esthomy.converter.OperationOfferConverter;
 import com.dev.esthomy.dto.request.CreateHospitalRequest;
 import com.dev.esthomy.dto.response.CreateHospitalResponse;
 import com.dev.esthomy.dto.response.HospitalListResponse;
@@ -10,23 +11,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hospital")
+@RequestMapping("v1/hospital")
 @RequiredArgsConstructor
 public class HospitalController {
     private final HospitalService hospitalService;
 
     private final HospitalConverter hospitalConverter;
+    private final OperationOfferConverter operationOfferConverter;
 
     @PostMapping
-    public ResponseEntity<CreateHospitalResponse> create(@RequestBody CreateHospitalRequest request){
+    public ResponseEntity<CreateHospitalResponse> create(@RequestBody CreateHospitalRequest request) {
 
         return ResponseEntity.ok().body(hospitalConverter.toResponse(hospitalService.create(request)));
     }
 
     @GetMapping
-    public ResponseEntity<HospitalListResponse> listAll()
-    {
+    public ResponseEntity<HospitalListResponse> listAll() {
         return ResponseEntity.ok().body(hospitalConverter.toResponseList(hospitalService.listAll()));
     }
+
 
 }

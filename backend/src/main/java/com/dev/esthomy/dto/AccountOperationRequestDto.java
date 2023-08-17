@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class AccountDto {
+public class AccountOperationRequestDto {
     private String name;
     private String surname;
     private int age;
@@ -16,4 +16,5 @@ public class AccountDto {
     private String password;
     private String gender;
     private String email;
+    private List<String> operationId;
 }

@@ -1,10 +1,9 @@
 package com.dev.esthomy.controller;
 
+import com.dev.esthomy.converter.OperationOfferConverter;
 import com.dev.esthomy.dto.request.operationOfferRequest.CreateOperationOffer;
-import com.dev.esthomy.dto.request.operationRequest.CreateOperationRequest;
-import com.dev.esthomy.dto.response.CreateOperationRequestResponse;
+import com.dev.esthomy.dto.response.CreateOperationOfferResponse;
 import com.dev.esthomy.service.OperationOfferService;
-import com.dev.esthomy.service.OperationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class OperationOfferController {
 
     private final OperationOfferService operationOfferService;
+    private final OperationOfferConverter operationOfferConverter;
 
 //    @PostMapping
-//    public ResponseEntity<CreateOperationRequestResponse> create (@RequestBody CreateOperationOffer request) {
-//
+//    public ResponseEntity<CreateOperationOfferResponse> sendOffer(@RequestBody CreateOperationOffer createOperationOffer) {
+//        return ResponseEntity.ok(operationOfferConverter.toResponse(operationOfferService.sendOffer(createOperationOffer)));
 //    }
 }

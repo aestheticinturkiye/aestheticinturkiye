@@ -1,8 +1,5 @@
 package com.dev.esthomy.dto;
 
-import com.dev.esthomy.models.Account;
-import com.dev.esthomy.models.Hospital;
-import com.dev.esthomy.models.OperationRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,5 +9,6 @@ public class OperationOfferDto {
     private String accountId;
     private String operationRequestId;
     private String hospitalId;
-    private Boolean isApproved;
+    private Double price;
+    private String description;
 }

@@ -30,6 +30,9 @@ public class OperationOffer {
     @JoinColumn(name = "operation_id",nullable = false)
     private OperationRequest operationRequest;
 
+    private Double price;
+    private String description;
+
     private Boolean isApproved = false;
 
     //price-description-broker-buraya mi ?

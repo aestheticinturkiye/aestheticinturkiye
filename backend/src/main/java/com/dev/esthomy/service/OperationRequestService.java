@@ -9,7 +9,9 @@ import com.dev.esthomy.repository.OperationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,15 @@ public class OperationRequestService {
 
     public List<OperationRequest> getAll(){
         return operationRequestRepository.findAll();
+    }
+
+    public OperationRequest getById(String operationRequestId) {
+        return operationRequestRepository.findById(operationRequestId).orElse(null);
+    }
+
+    public List<OperationRequest> getAllByAccountId(String accountId)
+    {
+        return operationRequestRepository.findAllByUserAccountId(accountId);
     }
 
 }
