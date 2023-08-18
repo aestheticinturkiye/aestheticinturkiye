@@ -19,17 +19,11 @@ public class OperationRequestService {
     private final OperationConverter operationConverter;
     private final AccountService accountService;
     private final OperationRequestRepository operationRequestRepository;
-
     public OperationRequestDto create(CreateOperationRequest request) {
-        List<Account>  accounts = accountService.getAllUsers();
-        Account account = accounts.stream()
-                .filter(account1 -> account1.getEmail().equals(request.getEmail()))
-                .findAny()
-                .orElse(null);
 
         return operationConverter.toDto(
                 operationRequestRepository.save(
-                        operationConverter.toModel(request,account)),account);
+                        operationConverter.toModel(request,accountService.getUserByMail(request.getEmail()))));
     }
 
     public List<OperationRequest> getAll(){

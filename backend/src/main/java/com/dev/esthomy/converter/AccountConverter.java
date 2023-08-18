@@ -1,26 +1,33 @@
 package com.dev.esthomy.converter;
 
 import com.dev.esthomy.dto.AccountDto;
-import com.dev.esthomy.dto.HospitalDto;
+import com.dev.esthomy.dto.OperationRequestDto;
 import com.dev.esthomy.dto.request.accountRequests.CreateAccountRequest;
 import com.dev.esthomy.dto.response.AccountListResponse;
 import com.dev.esthomy.dto.response.CreateAccountResponse;
-import com.dev.esthomy.dto.response.HospitalListResponse;
 import com.dev.esthomy.models.Account;
-import com.dev.esthomy.service.AccountService;
-import com.dev.esthomy.service.HospitalService;
-import com.dev.esthomy.service.OperationRequestService;
+import com.dev.esthomy.models.OperationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class AccountConverter {
-    public AccountDto toDto(Account account){
+    private final OperationConverter operationConverter;
 
+    public AccountDto toDto(Account account) {
+        List<OperationRequestDto> operationRequestDtos = new ArrayList<>();
+        List<OperationRequest> operationRequests = account.getOperationRequests();
+
+        if (operationRequests != null) {
+            operationRequestDtos = operationRequests.stream()
+                    .map(operationConverter::toDto)
+                    .collect(Collectors.toList());
+        }
         return AccountDto.builder()
                 .name(account.getName())
                 .email(account.getEmail())
@@ -30,10 +37,11 @@ public class AccountConverter {
                 .phone(account.getPhone())
                 .password(account.getPassword())
                 .gender(account.getGender())
+                .operationRequestDtos(operationRequestDtos)
                 .build();
     }
 
-    public Account toModel(CreateAccountRequest createAccountRequest){
+    public Account toModel(CreateAccountRequest createAccountRequest) {
         return Account.builder()
                 .age(createAccountRequest.getAge())
                 .country(createAccountRequest.getCountry())
@@ -46,7 +54,7 @@ public class AccountConverter {
                 .build();
     }
 
-    public CreateAccountResponse toResponse(AccountDto accountDto){
+    public CreateAccountResponse toResponse(AccountDto accountDto) {
         return CreateAccountResponse.builder()
                 .name(accountDto.getName())
                 .email(accountDto.getEmail())
@@ -57,8 +65,7 @@ public class AccountConverter {
         return fromModel.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public AccountListResponse toResponseList(List<AccountDto> accountDtos)
-    {
+    public AccountListResponse toResponseList(List<AccountDto> accountDtos) {
         return AccountListResponse.builder()
                 .accountDtos(accountDtos)
                 .build();

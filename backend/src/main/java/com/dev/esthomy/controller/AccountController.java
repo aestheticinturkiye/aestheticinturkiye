@@ -1,6 +1,7 @@
 package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.AccountConverter;
+import com.dev.esthomy.dto.AccountDto;
 import com.dev.esthomy.dto.request.accountRequests.CreateAccountRequest;
 import com.dev.esthomy.dto.response.CreateAccountResponse;
 import com.dev.esthomy.models.Account;
@@ -23,11 +24,11 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<CreateAccountResponse> create(final @Valid @RequestBody CreateAccountRequest request) {
-        return ResponseEntity.ok().body(accountConverter.toResponse(accountService.create(request)));
+        return ResponseEntity.ok().body(accountService.createCreateResponse(request));
     }
 
     @GetMapping
-    public List<Account> getAllUsers(){
+    public List<AccountDto> getAllUsers(){
         return accountService.getAllUsers();
     }
 }

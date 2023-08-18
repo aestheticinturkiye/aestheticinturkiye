@@ -16,4 +16,5 @@ public class AccountDto {
     private String password;
     private String gender;
     private String email;
+    private List<OperationRequestDto> operationRequestDtos;
 }
