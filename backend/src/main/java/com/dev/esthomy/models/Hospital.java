@@ -1,5 +1,6 @@
 package com.dev.esthomy.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class Hospital {
     private Boolean isActive;
     // Bir hospital birden fazla preRequest bulundurabilir.
     @OneToMany(mappedBy = "hospital",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OperationOffer> operationOffers = new ArrayList<>();
 
 }

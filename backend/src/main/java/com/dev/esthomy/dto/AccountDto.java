@@ -1,5 +1,6 @@
 package com.dev.esthomy.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,5 +17,6 @@ public class AccountDto {
     private String password;
     private String gender;
     private String email;
+    @JsonIgnoreProperties("userAccount")
     private List<OperationRequestDto> operationRequestDtos;
 }

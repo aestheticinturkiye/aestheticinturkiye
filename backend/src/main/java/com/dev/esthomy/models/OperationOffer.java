@@ -1,5 +1,6 @@
 package com.dev.esthomy.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,19 +16,22 @@ import org.hibernate.annotations.GenericGenerator;
 public class OperationOffer {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name ="UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id",nullable = false)
+    @JsonBackReference
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "hospital_id",nullable = false)
+    @JsonBackReference
+    @JoinColumn(name = "hospital_id", nullable = false)
     private Hospital hospital;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "operation_id",nullable = false)
+    @JsonBackReference
+    @JoinColumn(name = "operation_id", nullable = false)
     private OperationRequest operationRequest;
 
     private Double price;

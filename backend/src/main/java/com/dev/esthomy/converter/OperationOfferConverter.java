@@ -7,9 +7,6 @@ import com.dev.esthomy.models.Account;
 import com.dev.esthomy.models.Hospital;
 import com.dev.esthomy.models.OperationOffer;
 import com.dev.esthomy.models.OperationRequest;
-import com.dev.esthomy.service.AccountService;
-import com.dev.esthomy.service.HospitalService;
-import com.dev.esthomy.service.OperationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,22 +14,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OperationOfferConverter {
 
-//    public final AccountService accountService;
-//    public final HospitalService hospitalService;
-//    public final OperationRequestService operationRequestService;
-//
-//    public OperationOffer toModel(CreateOperationOffer request) {
-//        Account account = accountService.getById(request.getAccountId());
-//        OperationRequest operationRequest = operationRequestService.getById(request.getOperationRequestId());
-//        Hospital hospital = hospitalService.getById(request.getHospitalId());
-//
-//        return OperationOffer.builder()
-//                .price(request.getPrice())
-//                .description(request.getDescription())
-//                .operationRequest(operationRequest)
-//                .hospital(hospital)
-//                .account(account).build();
-//    }
+
+    public OperationOffer toModel(CreateOperationOffer request, Account account, OperationRequest operationRequest, Hospital hospital) {
+        return OperationOffer.builder()
+                .price(request.getPrice())
+                .description(request.getDescription())
+                .operationRequest(operationRequest)
+                .hospital(hospital)
+                .account(account).build();
+    }
 
     public OperationOfferDto toDto(OperationOffer operationOffer) {
         return OperationOfferDto.builder()

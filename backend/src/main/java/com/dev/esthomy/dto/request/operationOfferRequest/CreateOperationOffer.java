@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateOperationOffer {
-    private String accountId;
+    private String accountEmail;
     private String operationRequestId;
     private String hospitalId;
     private Double price;

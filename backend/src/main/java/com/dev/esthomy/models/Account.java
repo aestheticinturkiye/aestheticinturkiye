@@ -1,7 +1,6 @@
 package com.dev.esthomy.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name ="UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String name;
@@ -36,8 +35,8 @@ public class Account {
     private String email;
 
     // Bir user birden fazla preRequest bulundurabilir.
-    @JsonIgnoreProperties("userAccount")
-    @OneToMany(mappedBy = "userAccount",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userAccount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OperationRequest> operationRequests = new ArrayList<>();
 
 }
