@@ -1,28 +1,30 @@
 package com.dev.esthomy.service;
 
 import com.dev.esthomy.models.Account;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.UploadObjectArgs;
+import io.minio.*;
 import io.minio.errors.*;
+import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @RequiredArgsConstructor
+@Component
 public class FileUploader {
-    private final AccountService accountService;
     private static MinioClient connect() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         try {
             // Create a minioClient with the MinIO server playground, its access key and secret key.
             MinioClient minioClient =
                     MinioClient.builder()
-                            .endpoint("https://play.min.io")
-                            .credentials("Q3AM3UQ867SPQQA43P2F", "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG")
+                            .endpoint("http://127.0.0.1:9000")
+                            .credentials("ktlPLmjGSXqTYzwXWjdy", "PpCNMaM64ERpsHNK0AchrOOGwALlhsKCBEr2KJSv")
                             .build();
 
             return minioClient;
@@ -32,8 +34,7 @@ public class FileUploader {
         return null;
     }
 
-    public void uploadToMinio(String email, File file) throws IOException, NoSuchAlgorithmException, InvalidKeyException, ServerException, InsufficientDataException, ErrorResponseException, InvalidResponseException, XmlParserException, InternalException {
-        Account account = accountService.getUserByMail(email);
+    public void uploadToMinio(Account account, File file) throws IOException, NoSuchAlgorithmException, InvalidKeyException, ServerException, InsufficientDataException, ErrorResponseException, InvalidResponseException, XmlParserException, InternalException {
         try {
             MinioClient minioClient = connect();
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(account.getId()).build());
@@ -45,12 +46,33 @@ public class FileUploader {
                     .object(file.getName())
                     .filename(file.getAbsolutePath())
                     .build());
-            System.out.println(file.getAbsolutePath() + "uploaded as" + file.getName() + " to bucket" + account.getId());
+            System.out.println(file.getAbsolutePath() + "uploaded as" + file.getName() + " to bucket" + account.getName());
         }
         catch (MinioException e) {
             System.out.println("Error" + e);
             System.out.printf("Http Trace" + e.httpTrace());
         }
+    }
+
+    public List<String> listObjectFiles(Account account){
+        try {
+            MinioClient minioClient = connect();
+            Iterable<Result<Item>> results = minioClient.listObjects(
+                    ListObjectsArgs.builder().bucket(account.getName()).recursive(true).build());
+
+            Iterator<Result<Item>> it = results.iterator();
+            List<String> items=new ArrayList<>();
+            while (it.hasNext())
+            {
+                Item i = it.next().get();
+                items.add("Object: " + i.objectName() + "with size" + i.size());
+            }
+
+            return items;
+        }catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 
     public void downloadObject(String email){
