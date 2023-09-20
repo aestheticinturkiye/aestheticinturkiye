@@ -2,6 +2,7 @@ package com.dev.esthomy.controller;
 
 import com.dev.esthomy.converter.AccountConverter;
 import com.dev.esthomy.dto.AccountDto;
+import com.dev.esthomy.dto.request.MinioRequests.DownloadObjectFromMinio;
 import com.dev.esthomy.dto.request.MinioRequests.UploadObjectToMinio;
 import com.dev.esthomy.dto.request.accountRequests.CreateAccountRequest;
 import com.dev.esthomy.dto.response.CreateAccountResponse;
@@ -48,6 +49,14 @@ public class AccountController {
 
     @PostMapping("/listObjects")
     public ResponseEntity<List<String>> listObjects(final @RequestBody String email) {
+        //toDo: refactor.
         return ResponseEntity.ok().body(accountService.listBucketObjects(email));
+    }
+
+    @PostMapping("/downloadObject")
+    public ResponseEntity<String> downloadObject(final @RequestBody DownloadObjectFromMinio dowloadObjectFromMinio)
+    {
+        accountService.downloadObject(dowloadObjectFromMinio);
+        return ResponseEntity.ok().body("ok");
     }
 }

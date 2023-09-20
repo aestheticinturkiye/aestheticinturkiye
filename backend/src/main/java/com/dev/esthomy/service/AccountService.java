@@ -2,12 +2,14 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.converter.AccountConverter;
 import com.dev.esthomy.dto.AccountDto;
+import com.dev.esthomy.dto.request.MinioRequests.DownloadObjectFromMinio;
 import com.dev.esthomy.dto.request.accountRequests.CreateAccountRequest;
 import com.dev.esthomy.dto.response.CreateAccountResponse;
 import com.dev.esthomy.models.Account;
 import com.dev.esthomy.repository.AccountRepository;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -69,4 +71,18 @@ public class AccountService {
         return null;
     }
 
+
+    public void downloadObject(DownloadObjectFromMinio downloadObjectFromMinio)
+    {
+        try {
+            Account account = this.getUserByMail(downloadObjectFromMinio.getEmail());
+            if(account!= null)
+            {
+                fileUploader.downloadObject(account,downloadObjectFromMinio.getFileName());
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
 }
