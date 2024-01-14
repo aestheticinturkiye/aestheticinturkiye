@@ -85,3 +85,7 @@ Mbackend/src/main/java/com/dev/esthomy/dto/request/CreateOperationRequest.java,
 Lbackend/src/main/java/com/dev/esthomy/dto/response/HospitalListResponse.java,6/5/6599492c6182c395ec517bfadb3f06b183b641ea
 m
 =backend/src/main/java/com/dev/esthomy/EsthomyApplication.java,4/2/42b31e440da8246244c6e5fec7dc48b7742d7b8c
+š
+jbackend/src/main/java/com/dev/esthomy/dto/authentication/request/AuthenticateWithRefreshTokenResponse.java,2/3/23207819615b1e68036ffc161a58e211dd210227
+‘
+abackend/src/main/java/com/dev/esthomy/dto/authentication/response/AuthenticateResponseStatus.java,5/2/527746d35b97d34e41ec4fd7b40e59bbc55f6472
