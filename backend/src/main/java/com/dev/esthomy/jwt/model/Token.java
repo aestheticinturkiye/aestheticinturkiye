@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class JwtTokens {
-    private Token accessToken;
-    private Token refreshToken;
+public class Token {
+    private String value;
+    private Long duration;
 }

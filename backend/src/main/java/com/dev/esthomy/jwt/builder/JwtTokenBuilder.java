@@ -3,6 +3,7 @@ package com.dev.esthomy.jwt.builder;
 import com.dev.esthomy.jwt.configuration.JwtProperties;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.jwt.model.JwtTokens;
+import com.dev.esthomy.jwt.model.Token;
 import io.jsonwebtoken.JwtBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,29 +30,34 @@ public class JwtTokenBuilder {
                 .build();
     }
 
-    private String buildAccessToken(final JwtClaims claims, final long issuedAtMillis) {
-        return accessTokenBuilder
-                .setIssuer(jwtProperties.getIssuer())
-                .setIssuedAt(new Date(issuedAtMillis))
-                .setExpiration(new Date(issuedAtMillis + jwtProperties.getAccess().getExpiration().toMillis()))
-                .addClaims(Map.ofEntries(
-                        Map.entry("role", claims.getRole()),
-                        Map.entry("email", claims.getEmail()),
-                        Map.entry("id", claims.getId())
-                ))
-                .compact();
+    private Token buildAccessToken(final JwtClaims claims, final long issuedAtMillis) {
+        return Token.builder()
+                .value(accessTokenBuilder
+                        .setIssuer(jwtProperties.getIssuer())
+                        .setIssuedAt(new Date(issuedAtMillis))
+                        .setExpiration(new Date(issuedAtMillis + jwtProperties.getAccess().getExpiration().toMillis()))
+                        .addClaims(Map.ofEntries(
+                                Map.entry("role", claims.getRole()),
+                                Map.entry("email", claims.getEmail()),
+                                Map.entry("id", claims.getId())
+                        ))
+                        .compact())
+                .duration(jwtProperties.getAccess().getExpiration().toMillis())
+                .build();
     }
-
-    private String buildRefreshToken(final JwtClaims claims, final long issuedAtMillis) {
-        return refreshTokenBuilder
-                .setIssuer(jwtProperties.getIssuer())
-                .setIssuedAt(new Date(issuedAtMillis))
-                .setExpiration(new Date(issuedAtMillis + jwtProperties.getRefresh().getExpiration().toMillis()))
-                .addClaims(Map.ofEntries(
-                        Map.entry("role", claims.getRole()),
-                        Map.entry("email", claims.getEmail()),
-                        Map.entry("id", claims.getId())
-                ))
-                .compact();
+    private Token buildRefreshToken(final JwtClaims claims, final long issuedAtMillis) {
+        return Token.builder()
+                .value(refreshTokenBuilder
+                        .setIssuer(jwtProperties.getIssuer())
+                        .setIssuedAt(new Date(issuedAtMillis))
+                        .setExpiration(new Date(issuedAtMillis + jwtProperties.getRefresh().getExpiration().toMillis()))
+                        .addClaims(Map.ofEntries(
+                                Map.entry("role", claims.getRole()),
+                                Map.entry("email", claims.getEmail()),
+                                Map.entry("id", claims.getId())
+                        ))
+                        .compact())
+                .duration(jwtProperties.getRefresh().getExpiration().toMillis())
+                .build();
     }
 }

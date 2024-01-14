@@ -19,14 +19,11 @@ public class HospitalController {
 
     @PostMapping
     public ResponseEntity<CreateHospitalResponse> create(@RequestBody CreateHospitalRequest request){
-
         return ResponseEntity.ok().body(hospitalConverter.toResponse(hospitalService.create(request)));
     }
 
     @GetMapping
-    public ResponseEntity<HospitalListResponse> listAll()
-    {
+    public ResponseEntity<HospitalListResponse> listAll() {
         return ResponseEntity.ok().body(hospitalConverter.toResponseList(hospitalService.listAll()));
     }
-
 }

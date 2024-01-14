@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final LoginService loginService;
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest loginRequest){
-        return ResponseEntity.ok().body(loginService.login(loginRequest));
+        return loginService.login(loginRequest);
     }
 }

@@ -16,11 +16,11 @@ public class AccessTokenResolver {
         this.jwtParser = jwtParser;
     }
 
-    private JwtClaims resolve(final String accessToken){
+    public JwtClaims resolve(final String accessToken){
         final Claims claims = jwtParser.parseClaimsJws(accessToken).getBody();
         return JwtClaims.builder()
                 .email(claims.get("email", String.class))
-                .role(claims.get("role", MemberRole.class))
+                .role(MemberRole.valueOf(claims.get("role", String.class)))
                 .id(claims.get("id", String.class))
                 .build();
     }

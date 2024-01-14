@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @Builder
 public class LoginResponse {
-    private JwtTokens token;
+    private String status;
 }
