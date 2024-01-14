@@ -1,0 +1,28 @@
+server:
+    port: 8080
+
+jwt:
+  access:
+    expiration: 5m
+    secret:
+      key: 06012000!-06042000?*-2404-2000*&
+  refresh:
+    expiration: 10m
+    secret:
+      key: 06012000!-06042000?*-2404-2000*&
+    issuer: aesthetics
+
+
+spring:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/testEsthomy
+    username: sa
+    password: password

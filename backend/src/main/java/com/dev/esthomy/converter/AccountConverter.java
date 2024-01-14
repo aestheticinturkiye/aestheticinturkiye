@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class AccountConverter {
     public AccountDto toDto(Account account){
         return AccountDto.builder()
+                .id(account.getId())
                 .name(account.getName())
                 .email(account.getEmail())
                 .surname(account.getSurname())
