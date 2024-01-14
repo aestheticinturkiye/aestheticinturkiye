@@ -16,4 +16,8 @@ public class AccountService {
     public AccountDto create(CreateAccountRequest request) {
         return accountConverter.toDto(accountRepository.save(accountConverter.toModel(request)));
     }
+
+    public AccountDto getAccountByEmailAddress(final String emailAddress) {
+        return accountConverter.toDto(accountRepository.findByEmail(emailAddress));
+    }
 }
