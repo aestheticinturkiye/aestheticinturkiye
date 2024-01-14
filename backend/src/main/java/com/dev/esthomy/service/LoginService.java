@@ -3,11 +3,16 @@ package com.dev.esthomy.service;
 import com.dev.esthomy.dto.AccountDto;
 import com.dev.esthomy.dto.authentication.request.LoginRequest;
 import com.dev.esthomy.dto.authentication.response.LoginResponse;
+import com.dev.esthomy.dto.authentication.response.LoginResponseStatus;
 import com.dev.esthomy.jwt.builder.JwtTokenBuilder;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.jwt.model.JwtTokens;
+import com.dev.esthomy.jwt.model.Token;
 import com.dev.esthomy.models.MemberRole;
+import com.dev.esthomy.util.CookieBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +20,9 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     private final AccountService accountService;
     private final JwtTokenBuilder jwtTokenBuilder;
+    private final CookieBuilder cookieBuilder;
 
-    public LoginResponse login(final LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(final LoginRequest request) {
 
         final AccountDto accountDto = accountService.getAccountByEmailAddress(request.getEmailAddress());
         final JwtTokens jwtTokens = jwtTokenBuilder.build(JwtClaims.builder()
@@ -25,11 +31,21 @@ public class LoginService {
                         .role(MemberRole.valueOf(request.getRole()))
                 .build());
 
-        return LoginResponse.builder()
-                .token(JwtTokens.builder()
-                        .accessToken(jwtTokens.getAccessToken())
-                        .refreshToken(jwtTokens.getRefreshToken())
-                        .build())
-                .build();
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        addAccessTokenCookie(httpHeaders, jwtTokens.getAccessToken());
+        addRefreshTokenCookie(httpHeaders, jwtTokens.getRefreshToken());
+        return ResponseEntity.ok()
+                .headers(httpHeaders)
+                .body(LoginResponse.builder()
+                        .status(LoginResponseStatus.SUCCESS.getValue())
+                        .build());
+    }
+
+    private void addAccessTokenCookie(HttpHeaders httpHeaders, Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildAccessTokenCookie(token.getValue(), token.getDuration()).toString());
+    }
+
+    private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildRefreshTokenCookie(token.getValue(), token.getDuration()).toString());
     }
 }
