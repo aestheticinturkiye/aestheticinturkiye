@@ -15,11 +15,11 @@ public class RefreshTokenResolver {
         this.jwtParser = jwtParser;
     }
 
-    private JwtClaims resolve(final String refreshToken) {
+    public JwtClaims resolve(final String refreshToken) {
         final Claims claims = jwtParser.parseClaimsJws(refreshToken).getBody();
         return JwtClaims.builder()
                 .email(claims.get("email", String.class))
-                .role(claims.get("role", MemberRole.class))
+                .role(MemberRole.valueOf(claims.get("role", String.class)))
                 .id(claims.get("id", String.class))
                 .build();
     }

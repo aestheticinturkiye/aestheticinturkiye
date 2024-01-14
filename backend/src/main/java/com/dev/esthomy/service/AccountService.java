@@ -7,6 +7,8 @@ import com.dev.esthomy.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -14,7 +16,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountConverter accountConverter;
     public AccountDto create(CreateAccountRequest request) {
-        return accountConverter.toDto(accountRepository.save(accountConverter.toModel(request)));
+        return accountConverter.toDto(Optional.of(accountRepository.save(accountConverter.toModel(request))));
     }
 
     public AccountDto getAccountByEmailAddress(final String emailAddress) {
