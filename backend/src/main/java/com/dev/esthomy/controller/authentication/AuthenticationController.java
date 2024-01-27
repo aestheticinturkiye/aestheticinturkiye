@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/user")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final LoginService loginService;

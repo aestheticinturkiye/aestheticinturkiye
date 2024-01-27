@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hospital")
+@RequestMapping("/v1/hospital")
 @RequiredArgsConstructor
 public class HospitalController {
     private final HospitalService hospitalService;
