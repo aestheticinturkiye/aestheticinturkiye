@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: esthomy_db
+      POSTGRES_USER: esthomyuser
+      POSTGRES_PASSWORD: esthomy2000*
+    ports:
+      - "5432:5432"
+
+
