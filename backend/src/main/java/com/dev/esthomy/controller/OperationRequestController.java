@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/operation-request")
+@RequestMapping("/v1/operation-request")
 @RequiredArgsConstructor
 public class OperationRequestController {
     private final OperationRequestService operationRequestService;
