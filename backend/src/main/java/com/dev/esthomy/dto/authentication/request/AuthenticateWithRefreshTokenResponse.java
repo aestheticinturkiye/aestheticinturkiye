@@ -4,5 +4,5 @@ import lombok.Builder;
 
 @Builder
 public class AuthenticateWithRefreshTokenResponse {
-    private String status;
+    private String accessToken;
 }

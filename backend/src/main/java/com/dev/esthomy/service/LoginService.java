@@ -34,29 +34,33 @@ public class LoginService {
                 .build());
 
         final HttpHeaders httpHeaders = new HttpHeaders();
-        addAccessTokenCookie(httpHeaders, jwtTokens.getAccessToken());
         addRefreshTokenCookie(httpHeaders, jwtTokens.getRefreshToken());
         return ResponseEntity.ok()
                 .headers(httpHeaders)
-                .build();
+                .body(LoginResponse.builder()
+                        .accessToken(jwtTokens.getAccessToken().getValue())
+                        .build());
+
     }
 
     public ResponseEntity<AuthenticateWithRefreshTokenResponse> authenticateWithRefreshToken(final String refreshToken) {
         final JwtClaims jwtClaims = refreshTokenResolver.resolve(refreshToken);
         final JwtTokens jwtTokens = jwtTokenBuilder.build(jwtClaims);
         final HttpHeaders httpHeaders = new HttpHeaders();
-        addAccessTokenCookie(httpHeaders, jwtTokens.getAccessToken());
         addRefreshTokenCookie(httpHeaders, jwtTokens.getRefreshToken());
         return ResponseEntity.ok()
                 .headers(httpHeaders)
-                .build();
+                .body(AuthenticateWithRefreshTokenResponse.builder()
+                        .accessToken(jwtTokens.getAccessToken().getValue())
+                        .build());
     }
 
-    private void addAccessTokenCookie(HttpHeaders httpHeaders, Token token) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildAccessTokenCookie(token.getValue(), token.getDuration()).toString());
+    //use it when you want to add access token inside the cookie
+    private void addAccessTokenCookie(final HttpHeaders httpHeaders, final Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildAccessTokenCookie(token).toString());
     }
 
-    private void addRefreshTokenCookie(HttpHeaders httpHeaders, Token token) {
-        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildRefreshTokenCookie(token.getValue(), token.getDuration()).toString());
+    private void addRefreshTokenCookie(final HttpHeaders httpHeaders, final Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieBuilder.buildRefreshTokenCookie(token).toString());
     }
 }
