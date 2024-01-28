@@ -1,0 +1,28 @@
+server:
+    port: 8080
+
+jwt:
+  access:
+    expiration: 5m
+    secret:
+      key: 06012000!-06042000?*-2404-2000*&
+  refresh:
+    expiration: 10m
+    secret:
+      key: 06012000!-06042000?*-2404-2000*&
+    issuer: aesthetics
+
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+      url: jdbc:postgresql://localhost:5432/esthomy_db
+      username: esthomyuser
+      password: esthomy2000*
+
+
+cookie:
+  accessTokenCookieName: ACCESS_TOKEN
+  refreshTokenCookieName: REFRESH_TOKEN

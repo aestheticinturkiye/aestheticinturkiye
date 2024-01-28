@@ -6,19 +6,23 @@ import com.dev.esthomy.dto.response.CreateAccountResponse;
 import com.dev.esthomy.models.Account;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AccountConverter {
-    public AccountDto toDto(Account account){
-        return AccountDto.builder()
-                .name(account.getName())
-                .email(account.getEmail())
-                .surname(account.getSurname())
-                .age(account.getAge())
-                .country(account.getCountry())
-                .phone(account.getPhone())
-                .password(account.getPassword())
-                .gender(account.getGender())
-                .build();
+    public AccountDto toDto(final Optional<Account> account){
+        return account.map(x -> AccountDto.builder()
+                .id(x.getId())
+                .name(x.getName())
+                .email(x.getEmail())
+                .surname(x.getSurname())
+                .age(x.getAge())
+                .country(x.getCountry())
+                .phone(x.getPhone())
+                .password(x.getPassword())
+                .gender(x.getGender())
+                .build()
+               ).orElseThrow(()-> new RuntimeException("Account not found"));
     }
 
     public Account toModel(CreateAccountRequest createAccountRequest){
