@@ -5,6 +5,7 @@ export function useMultiplestepForm(steps: number) {
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
 
   const nextStep = () => {
+    console.log("geldi");
     if (currentStepIndex < steps - 1) {
       setCurrentStepIndex((i) => i + 1);
     }

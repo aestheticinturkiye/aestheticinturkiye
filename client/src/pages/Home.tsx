@@ -1,35 +1,63 @@
-import { useNavigate, Link } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import React from "react";
+import { Nav } from "@/components/navbar";
+import {
+  AlertCircle,
+  Archive,
+  ArchiveX,
+  File,
+  Inbox,
+  MessagesSquare,
+  PenBox,
+  Search,
+  Send,
+  ShoppingCart,
+  Trash2,
+  Users2,
+} from "lucide-react";
 
 const Home = () => {
-  const { setAuth } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const logout = async () => {
-    // if used in more components, this should be in context
-    // axios to /logout endpoint
-    setAuth({});
-    navigate("/linkpage");
-  };
-
   return (
-    <section>
-      <h1>Home</h1>
-      <br />
-      <p>You are logged in!</p>
-      <br />
-      <Link to="/editor">Go to the Editor page</Link>
-      <br />
-      <Link to="/admin">Go to the Admin page</Link>
-      <br />
-      <Link to="/lounge">Go to the Lounge</Link>
-      <br />
-      <Link to="/linkpage">Go to the link page</Link>
-      <div className="flexGrow">
-        <button onClick={logout}>Sign Out</button>
-      </div>
-    </section>
+    <Nav
+      isCollapsed={true}
+      links={[
+        {
+          title: "Inbox",
+          label: "128",
+          icon: Inbox,
+          variant: "default",
+        },
+        {
+          title: "Drafts",
+          label: "9",
+          icon: File,
+          variant: "ghost",
+        },
+        {
+          title: "Sent",
+          label: "",
+          icon: Send,
+          variant: "ghost",
+        },
+        {
+          title: "Junk",
+          label: "23",
+          icon: ArchiveX,
+          variant: "ghost",
+        },
+        {
+          title: "Trash",
+          label: "",
+          icon: Trash2,
+          variant: "ghost",
+        },
+        {
+          title: "Archive",
+          label: "",
+          icon: Archive,
+          variant: "ghost",
+        },
+      ]}
+    />
   );
 };
 

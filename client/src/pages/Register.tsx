@@ -1,7 +1,9 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import * as z from "zod";
-import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FindPartnerForm } from "./FindPartner/FindPartnerForm";
+import { useState } from "react";
+import FormWrapper from "@/components/FormWrapper";
 
 const formSchema: any = z
   .object({
@@ -31,11 +34,11 @@ const formSchema: any = z
       message: "Password must be at least 6 characters.",
     }),
     rePassword: z.string(),
-    country: z.string().min(2, {
-      message: "Name must be filled",
+    disease: z.string().min(2, {
+      message: "Disease must be filled",
     }),
-    phoneNumber: z.string().min(2, {
-      message: "Name must be filled",
+    description: z.string().min(2, {
+      message: "Description must be filled",
     }),
   })
   .refine((data) => data.password === data.rePassword, {
@@ -43,166 +46,212 @@ const formSchema: any = z
     path: ["rePassword"], // path of error
   });
 
-export function Register() {
-  // 1. Define your form.
-  const navigate = useNavigate();
+const steps = [
+  {
+    id: "Step 1",
+    name: "Information",
+    fields: ["disease", "description"],
+  },
+  //   {
+  //     id: "Step 2",
+  //     name: "Address",
+  //     fields: ["country", "city"],
+  //   },
+  {
+    id: "Step 3",
+    name: "Personal Information",
+    fields: ["name", "surname", "email", "password", "rePassword"],
+  },
+];
 
+export function Register() {
+  const [previousStep, setPreviousStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const delta = currentStep - previousStep;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
       rePassword: "",
+      name: "",
+      surname: "",
+      disease: "",
+      description: "",
     },
   });
 
-  const formFileds = { name: "qwefhgqwe" };
+  const processForm: SubmitHandler<any> = (data) => {
+    console.log(data);
+    form.reset();
+  };
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const next = async () => {
+    const fields = steps[currentStep].fields;
+    console.log("fields", fields);
+    const output = await form.trigger(fields, {
+      shouldFocus: true,
+    });
+    console.log("output", output);
+    if (!output) return;
 
+    if (currentStep === steps.length - 1) {
+      await form.handleSubmit(processForm)();
+    }
+    setPreviousStep(currentStep);
+    setCurrentStep((step) => step + 1);
+  };
+
+  const prev = () => {
+    if (currentStep > 0) {
+      setPreviousStep(currentStep);
+      setCurrentStep((step) => step - 1);
+    }
+  };
   return (
-    <div className="overflow-hidden h-full bg-background">
-      <div className="container relative flex-col min-h-screen items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Button
-          className="absolute right-4 top-4 md:right-8 md:top-8"
-          variant="ghost"
-          onClick={() => {
-            navigate("/login");
-          }}
-        >
-          {" "}
-          Login
-        </Button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(processForm)} className="space-y-3">
+        <div className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Create an account
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Enter your informations below to create your account
+          </p>
+        </div>
 
-        <div className="relative hidden min-h-full flex-col bg-muted p-10   text-white lg:flex dark:border-r">
-          <div className="absolute inset-0">
-            <img
-              width={"100%"}
-              height={"100%"}
-              src="src/assets/register.jpeg"
-              alt=""
+        {/* Email Field */}
+
+        {currentStep === 1 && (
+          <FormWrapper>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="your name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="relative z-20 flex items-center text-2xl font-semibold tracking-tight">
-            Esthomy
-          </div>
-        </div>
 
-        <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-3"
-              >
-                <div className="flex flex-col space-y-2 text-center">
-                  <h1 className="text-2xl font-semibold tracking-tight">
-                    Create an account
-                  </h1>
-                  <p className="text-sm text-muted-foreground">
-                    Enter your informations below to create your account
-                  </p>
-                </div>
-                {/* Email Field */}
+            <FormField
+              control={form.control}
+              name="surname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Surname</FormLabel>
+                  <FormControl>
+                    <Input placeholder="your surname" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="example@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="your name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="surname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Surname</FormLabel>
-                      <FormControl>
-                        <Input placeholder="your surname" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="example@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            {/* Password Field */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="********" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Password must be at least 6 characters.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                {/* Password Field */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="********"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Password must be at least 6 characters.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            {/* Re-enter Password Field */}
+            <FormField
+              control={form.control}
+              name="rePassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Re-enter Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="********" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Please re-enter your password.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormWrapper>
+        )}
 
-                {/* Re-enter Password Field */}
-                <FormField
-                  control={form.control}
-                  name="rePassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Re-enter Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="********"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Please re-enter your password.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FindPartnerForm {...form} />
+        {currentStep === 0 && (
+          <FormWrapper>
+            <FormField
+              control={form.control}
+              name="disease"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Disease</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Disease" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Describe your disease" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormWrapper>
+        )}
+        {/* {<FindPartnerForm {...form} />} */}
 
-                <Button className="w-full" type="submit">
-                  Submit
-                </Button>
-              </form>
-            </Form>
-          </div>
-        </div>
-      </div>
-    </div>
+        {/* {currentStep === 3 && <Step3 {...form} />} */}
+
+        {currentStep !== 0 && (
+          <Button
+            onClick={prev}
+            type="button"
+            variant="ghost"
+            className="w-full visible p-0 text-neutral-200 hover:text-white"
+          >
+            Previous
+          </Button>
+        )}
+
+        <Button onClick={next} className="w-full" type="button">
+          {currentStep === 2 ? "Submit" : "Next"}
+        </Button>
+      </form>
+    </Form>
   );
 }

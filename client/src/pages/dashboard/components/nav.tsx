@@ -3,15 +3,13 @@
 import { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
-import { buttonVariants } from "./ui/button";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
 
 interface NavProps {
   isCollapsed: boolean;
@@ -32,39 +30,34 @@ export function Nav({ links, isCollapsed }: NavProps) {
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
         {links.map((link, index) =>
           isCollapsed ? (
-            <TooltipProvider>
-              <Tooltip key={index} delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <Link
-                    href="#"
-                    className={cn(
-                      buttonVariants({ variant: link.variant, size: "icon" }),
-                      "h-9 w-9",
-                      link.variant === "default" &&
-                        "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
-                    )}
-                  >
-                    <link.icon className="h-4 w-4" />
-                    <span className="sr-only">{link.title}</span>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="right"
-                  className="flex items-center gap-4"
-                >
-                  {link.title}
-                  {link.label && (
-                    <span className="ml-auto text-muted-foreground">
-                      {link.label}
-                    </span>
+            <Tooltip key={index} delayDuration={0}>
+              <TooltipTrigger asChild>
+                <Link
+                  to="/goto"
+                  className={cn(
+                    buttonVariants({ variant: link.variant, size: "icon" }),
+                    "h-9 w-9",
+                    link.variant === "default" &&
+                      "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                   )}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                >
+                  <link.icon className="h-4 w-4" />
+                  <span className="sr-only">{link.title}</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="flex items-center gap-4">
+                {link.title}
+                {link.label && (
+                  <span className="ml-auto text-muted-foreground">
+                    {link.label}
+                  </span>
+                )}
+              </TooltipContent>
+            </Tooltip>
           ) : (
             <Link
               key={index}
-              href="#"
+              to="goto"
               className={cn(
                 buttonVariants({ variant: link.variant, size: "sm" }),
                 link.variant === "default" &&

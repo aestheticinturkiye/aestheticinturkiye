@@ -50,8 +50,8 @@ export function Login() {
 
   // 2. Define a submit handler.
   const onSubmit = async (params: any) => {
-    const response = await axios.post("/auth/user/login", {
-      emailAdress: params.email,
+    const response = await axios.post("/v1/auth/login", {
+      emailAddress: params.email,
       password: params.password,
       MemberRole: 0,
     });

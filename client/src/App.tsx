@@ -1,14 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
-import { FindPartnerForm } from "./pages/FindPartner/FindPartnerForm";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
+import Home from "./pages/Home";
+import MailPage from "./pages/dashboard/page";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/home" element={<FindPartnerForm />} />
+        <Route path="/register" element={<Home />} />
+        <Route path="/dashboard" element={<MailPage />} />
 
         {/* public routes */}
         {/* <Route index element={<Navigate to="/home" replace />} />
