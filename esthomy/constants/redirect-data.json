@@ -1,0 +1,6 @@
+{
+  "/partner": {
+    "destination": "/partner/dashboard",
+    "permanent": true
+  }
+}
