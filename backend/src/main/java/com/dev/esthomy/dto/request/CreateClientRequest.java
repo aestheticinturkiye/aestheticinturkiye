@@ -1,16 +1,14 @@
-package com.dev.esthomy.dto.request.accountRequests;
+package com.dev.esthomy.dto.request;
 
 import com.dev.esthomy.validator.aspect.ValidateEmail;
 import com.dev.esthomy.validator.aspect.ValidateGSMNumber;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Data;
 
 
 @Data
-@Builder
-public class CreateAccountRequest {
+public class CreateClientRequest {
     @NotBlank
     private String name;
     @NotBlank

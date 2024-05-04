@@ -1,7 +1,8 @@
 package com.dev.esthomy.models;
 
-import com.dev.esthomy.validator.aspect.ValidateEmail;
+import com.dev.esthomy.models.enums.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -15,18 +16,14 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationRequest {
+public class Operation {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name ="UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String clientName;
+    private String proposalId;
 
-    @ValidateEmail
-    private String email;
-    private String phoneNumber;
-    private String country;
-    private int age;
-
+    @Enumerated
+    private Status status;
 }

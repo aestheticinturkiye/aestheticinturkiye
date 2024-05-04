@@ -1,4 +1,4 @@
-package com.dev.esthomy.jwt.model;
+package com.dev.esthomy.dto;
 
 import com.dev.esthomy.models.enums.MemberRole;
 import lombok.Builder;
@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class JwtClaims {
-    private MemberRole role;
+public class CredentialDto {
     private String email;
-    private String id;
+    private String password;
+    private MemberRole role;
 }

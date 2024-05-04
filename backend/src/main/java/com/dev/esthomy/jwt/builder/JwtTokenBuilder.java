@@ -17,12 +17,14 @@ import java.util.Map;
 public class JwtTokenBuilder {
 
     private final JwtProperties jwtProperties;
+
     @Qualifier("accessTokenBuilder")
-    private final JwtBuilder accessTokenBuilder ;
+    private final JwtBuilder accessTokenBuilder;
+
     @Qualifier("refreshTokenBuilder")
     private final JwtBuilder refreshTokenBuilder;
 
-    public JwtTokens build(final JwtClaims claims){
+    public JwtTokens build(final JwtClaims claims) {
         var issuedAtMillis = System.currentTimeMillis();
         return JwtTokens.builder()
                 .accessToken(buildAccessToken(claims, issuedAtMillis))
@@ -45,6 +47,7 @@ public class JwtTokenBuilder {
                 .duration(jwtProperties.getAccess().getExpiration().toMillis())
                 .build();
     }
+
     private Token buildRefreshToken(final JwtClaims claims, final long issuedAtMillis) {
         return Token.builder()
                 .value(refreshTokenBuilder

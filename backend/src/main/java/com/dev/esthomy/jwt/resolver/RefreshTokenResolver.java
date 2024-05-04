@@ -1,7 +1,7 @@
 package com.dev.esthomy.jwt.resolver;
 
 import com.dev.esthomy.jwt.model.JwtClaims;
-import com.dev.esthomy.models.MemberRole;
+import com.dev.esthomy.models.enums.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import org.springframework.beans.factory.annotation.Qualifier;

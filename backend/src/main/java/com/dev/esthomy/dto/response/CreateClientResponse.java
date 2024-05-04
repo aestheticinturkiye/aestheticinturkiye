@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateOperationRequestResponse {
-    private String clientName;
-    private int age;
+public class CreateClientResponse {
+    private String name;
+    private String email;
 }

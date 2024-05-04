@@ -1,11 +1,11 @@
-package com.dev.esthomy.models;
+package com.dev.esthomy.models.enums;
 
 import lombok.Getter;
 
 @Getter
 public enum MemberRole {
-    HOSPITAL(0),
-    PATIENT(1);
+    BROKER(0),
+    CLIENT(1);
 
     private final int value;
 

@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateAccountResponse {
-    private String name;
-    private String email;
+public class CreateFindPartnerRequestResponse {
+    private String id;
 }

@@ -19,7 +19,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("authenticateWithRefreshToken")
-    public ResponseEntity<AuthenticateWithRefreshTokenResponse> authenticateWithRefreshToken(@RequestHeader("REFRESH_TOKEN") final String refreshToken){
+    public ResponseEntity<AuthenticateWithRefreshTokenResponse> authenticateWithRefreshToken(@CookieValue("REFRESH_TOKEN") final String refreshToken) {
         return loginService.authenticateWithRefreshToken(refreshToken);
     }
 }
