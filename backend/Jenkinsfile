@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Docker login') {
+        stage('Docker Login') {
             steps {
                 withCredentials([string(credentialsId: 'DockerId', variable: 'DockerPwd')]) {
                     sh 'docker login -u mustafacolakoglu28 -p ${DockerPwd}'
@@ -28,6 +28,11 @@ pipeline {
         stage('Docker Push') {
             steps {
                 sh 'docker push mustafacolakoglu28/esthomy:${BUILD_NUMBER}'
+            }
+        }
+        stage('Docker Deploy') {
+            steps {
+                sh 'docker run -itd -p 8081:8080 mustafacolakoglu28/esthomy:${BUILD_NUMBER}'
             }
         }
         stage(Archiving) {
