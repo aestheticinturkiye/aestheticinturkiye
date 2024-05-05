@@ -172,3 +172,9 @@ x
 Hbackend/src/main/java/com/dev/esthomy/dto/request/GetAccountRequest.java,a/7/a730f56aaeee6a6cda2112f9376f821e2c8a3d02
 z
 Jbackend/src/main/java/com/dev/esthomy/dto/response/GetAccountResponse.java,b/2/b20b95768c312e3146b49b9c7eb53bfc788d1795
+T
+$backend/http-client.private.env.json,d/8/d8c05230649d1ca10b6f1d4463b770c12ded7055
+?
+backend/Jenkins,6/2/622c405607816398f4298303868300cd39b6c631
+J
+backend/Jenkinsfile.groovy,3/4/3440b760d6b3b905fe65d01c215a9157568bb89f
