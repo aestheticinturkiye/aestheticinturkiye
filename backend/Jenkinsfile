@@ -35,7 +35,7 @@ pipeline {
                 sh 'docker run -itd -p 8081:8080 mustafacolakoglu28/esthomy:${BUILD_NUMBER}'
             }
         }
-        stage(Archiving) {
+        stage('Archiving') {
             steps {
                 archiveArtifacts '**/target/*.jar'
             }
