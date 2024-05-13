@@ -2,6 +2,7 @@ package com.dev.esthomy.service;
 
 
 import com.dev.esthomy.dto.BrokerDto;
+import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateProposalRequest;
 import com.dev.esthomy.dto.response.CreateProposalResponse;
@@ -25,7 +26,7 @@ public class ProposalService {
     private final FindPartnerRequestService findPartnerRequestService;
 
     public CreateProposalResponse create(final JwtClaims principal, final CreateProposalRequest createProposal) {
-        if (principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
+        if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
 
         final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
         final FindPartnerRequest findPartnerRequest = findPartnerRequestService.getById(createProposal.getFindPartnerRequestId());
@@ -45,7 +46,7 @@ public class ProposalService {
     }
 
     public GetProposalResponse get(JwtClaims principal){
-        if (principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
+        if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
         final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
         final List<Proposal> proposals = proposalRepository.getByBrokerId(brokerDto.getId());
         return getProposalResponse(proposals);
@@ -53,9 +54,9 @@ public class ProposalService {
     }
 
     public GetProposalResponse getByClientId(JwtClaims principal){
-        if (principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not send proposal");
-        final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
-        final List<Proposal> proposals = proposalRepository.getByClientId(brokerDto.getId());
+        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not send proposal");
+        final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
+        final List<Proposal> proposals = proposalRepository.getByClientId(clientDto.getId());
         return getProposalResponse(proposals);
 
     }

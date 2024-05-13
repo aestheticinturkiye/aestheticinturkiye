@@ -9,11 +9,12 @@ import java.util.Optional;
 
 public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, String> {
 
-    @EntityGraph(value = "FindPartnerRequest.proposals")
+
+    @EntityGraph(value = "FindPartnerRequest.proposals",type = EntityGraph.EntityGraphType.LOAD)
     List<FindPartnerRequest> getByClientId(final String clientId);
 
     @Override
-    @EntityGraph(value = "FindPartnerRequest.proposals")
+    @EntityGraph(value = "FindPartnerRequest.proposals",type = EntityGraph.EntityGraphType.LOAD)
     FindPartnerRequest getById(final String id);
 
 }

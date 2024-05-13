@@ -27,7 +27,8 @@ public class FindPartnerRequest {
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;
-    @OneToMany(mappedBy = "findPartnerRequest")
+
+    @OneToMany(mappedBy = "findPartnerRequest" , cascade = CascadeType.ALL)
     private List<Proposal> proposals = new ArrayList<>();
     private boolean isNeededAccommodation;
     private boolean isNeededTransportation;

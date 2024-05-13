@@ -21,8 +21,8 @@ public class Proposal {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @ManyToOne()
+    @JoinColumn(name = "findPartnerRequest_id")
     private FindPartnerRequest findPartnerRequest;
     private String clientId;
     private String brokerId;

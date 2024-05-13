@@ -14,18 +14,14 @@ jwt:
 
 
 spring:
-  h2:
-    console:
-      enabled: true
-  datasource:
-    url: jdbc:h2:mem:TestEsthomy
-    username: sa
-    password: 123
-    driverClassName: org.h2.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+  datasource:
+      url: jdbc:postgresql://localhost:5432/esthomy_db
+      username: esthomyuser
+      password: esthomy2000*
+
 
 cookie:
   accessTokenCookieName: ACCESS_TOKEN

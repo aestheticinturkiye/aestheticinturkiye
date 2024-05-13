@@ -7,13 +7,13 @@ import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
+import com.dev.esthomy.models.Proposal;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.FindPartnerRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +51,7 @@ public class FindPartnerRequestService {
 
         return getGetFindPartnerRequestsResponse(partnerRequests);
     }
+
 
     public GetFindPartnerRequestsResponse getAll(final JwtClaims principal) {
         if (!principal.getRole().equals(MemberRole.BROKER))
