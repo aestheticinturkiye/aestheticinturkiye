@@ -1,8 +1,6 @@
 package com.dev.esthomy.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +21,10 @@ public class Proposal {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String findPartnerRequestId;
+    @ManyToOne()
+    @JoinColumn(name = "findPartnerRequest_id")
+    private FindPartnerRequest findPartnerRequest;
+    private String clientId;
     private String brokerId;
     private BigDecimal price;
     private Date operationDate;

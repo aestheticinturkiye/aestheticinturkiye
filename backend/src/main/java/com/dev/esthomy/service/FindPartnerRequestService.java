@@ -2,6 +2,7 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.FindPartnerRequestDto;
+import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
@@ -48,6 +49,21 @@ public class FindPartnerRequestService {
 
         final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.getByClientId(clientDto.getId());
 
+        return getGetFindPartnerRequestsResponse(partnerRequests);
+    }
+
+
+    public GetFindPartnerRequestsResponse getAll(final JwtClaims principal) {
+        if (!principal.getRole().equals(MemberRole.BROKER))
+            throw new RuntimeException("You can not reach find partner requests");
+
+
+        final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.findAll();
+
+        return getGetFindPartnerRequestsResponse(partnerRequests);
+    }
+
+    private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {
         final List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
                 .aestheticType(pr.getAestheticType())
                 .isNeededAccommodation(pr.isNeededAccommodation())
@@ -55,10 +71,17 @@ public class FindPartnerRequestService {
                 .preferedDate(pr.getPreferedDate())
                 .preferredCity(pr.getPreferredCity())
                 .description(pr.getDescription())
+                .proposalDtoList(pr.getProposals().stream()
+                        .map(dto -> ProposalDto.builder().price(dto.getPrice()).build()).toList())
                 .build()).toList();
 
         return GetFindPartnerRequestsResponse.builder()
                 .findPartnerRequests(partnerRequestDtos)
                 .build();
     }
+
+    public FindPartnerRequest getById(final String findPartnerRequestId) {
+        return findPartnerRequestRepository.getById(findPartnerRequestId);
+    }
+
 }

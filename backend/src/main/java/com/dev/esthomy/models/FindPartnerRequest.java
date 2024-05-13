@@ -1,17 +1,19 @@
 package com.dev.esthomy.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
+@NamedEntityGraph(name = "FindPartnerRequest.proposals",
+attributeNodes = @NamedAttributeNode("proposals"))
 @Data
 @Builder
 @NoArgsConstructor
@@ -25,6 +27,9 @@ public class FindPartnerRequest {
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;
+
+    @OneToMany(mappedBy = "findPartnerRequest" , cascade = CascadeType.ALL)
+    private List<Proposal> proposals = new ArrayList<>();
     private boolean isNeededAccommodation;
     private boolean isNeededTransportation;
     private String description;

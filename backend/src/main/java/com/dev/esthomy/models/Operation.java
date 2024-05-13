@@ -1,10 +1,7 @@
 package com.dev.esthomy.models;
 
 import com.dev.esthomy.models.enums.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +19,9 @@ public class Operation {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String proposalId;
+    @OneToOne
+    @JoinColumn(name = "proposal_id")
+    private Proposal proposal;
 
     @Enumerated
     private Status status;

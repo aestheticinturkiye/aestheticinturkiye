@@ -22,7 +22,9 @@ public class Broker {
 
     private String name;
     private String surname;
-    private String age;
+    private int age;
+    private String password;
+    private String gender;
     private String address;
     private String email;
     private String country;

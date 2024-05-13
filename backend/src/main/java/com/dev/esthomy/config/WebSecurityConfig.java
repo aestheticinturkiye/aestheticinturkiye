@@ -1,6 +1,8 @@
 package com.dev.esthomy.config;
 
 import com.dev.esthomy.filter.JwtTokenFilter;
+import jakarta.servlet.DispatcherType;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,11 +26,15 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        return http.cors().and().csrf().disable()
+        return http.headers().frameOptions().disable().and().cors().and().csrf().disable()
                 .authorizeHttpRequests(
                         x -> x.requestMatchers("/v1/auth/**").permitAll()
+                                .dispatcherTypeMatchers(DispatcherType.FORWARD,DispatcherType.ERROR).permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v1/client").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/v1/broker").permitAll()
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
