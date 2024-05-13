@@ -26,4 +26,9 @@ public class FindPartnerRequestController {
     public ResponseEntity<GetFindPartnerRequestsResponse> get(@AuthenticationPrincipal JwtClaims principal) {
         return ResponseEntity.ok().body(findPartnerRequestService.get(principal));
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<GetFindPartnerRequestsResponse> getALI(@AuthenticationPrincipal JwtClaims principal) {
+        return ResponseEntity.ok().body(findPartnerRequestService.getAll(principal));
+    }
 }

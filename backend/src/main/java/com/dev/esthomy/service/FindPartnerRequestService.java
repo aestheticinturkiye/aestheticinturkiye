@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +49,20 @@ public class FindPartnerRequestService {
 
         final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.getByClientId(clientDto.getId());
 
+        return getGetFindPartnerRequestsResponse(partnerRequests);
+    }
+
+    public GetFindPartnerRequestsResponse getAll(final JwtClaims principal) {
+        if (!principal.getRole().equals(MemberRole.BROKER))
+            throw new RuntimeException("You can not reach find partner requests");
+
+
+        final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.findAll();
+
+        return getGetFindPartnerRequestsResponse(partnerRequests);
+    }
+
+    private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {
         final List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
                 .aestheticType(pr.getAestheticType())
                 .isNeededAccommodation(pr.isNeededAccommodation())
@@ -61,4 +76,9 @@ public class FindPartnerRequestService {
                 .findPartnerRequests(partnerRequestDtos)
                 .build();
     }
+
+    public FindPartnerRequest getById(final String findPartnerRequestId) {
+        return findPartnerRequestRepository.getById(findPartnerRequestId);
+    }
+
 }
