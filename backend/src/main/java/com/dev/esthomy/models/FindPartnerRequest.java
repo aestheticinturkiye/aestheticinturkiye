@@ -27,7 +27,7 @@ public class FindPartnerRequest {
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;
-    @OneToMany(mappedBy = "findPartnerRequests")
+    @OneToMany(mappedBy = "findPartnerRequest")
     private List<Proposal> proposals = new ArrayList<>();
     private boolean isNeededAccommodation;
     private boolean isNeededTransportation;
