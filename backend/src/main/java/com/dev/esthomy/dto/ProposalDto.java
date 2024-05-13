@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @Builder
 public class ProposalDto {
+    private String id;
     private BigDecimal price;
     private Date operationDate;
     private String accommodation;

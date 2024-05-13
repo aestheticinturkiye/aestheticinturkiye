@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class ProposalService {
                 .id(proposal.getId()).build();
     }
 
-    public GetProposalResponse get(JwtClaims principal){
+    public GetProposalResponse get(JwtClaims principal) {
         if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
         final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
         final List<Proposal> proposals = proposalRepository.getByBrokerId(brokerDto.getId());
@@ -53,7 +54,7 @@ public class ProposalService {
 
     }
 
-    public GetProposalResponse getByClientId(JwtClaims principal){
+    public GetProposalResponse getByClientId(JwtClaims principal) {
         if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not send proposal");
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
         final List<Proposal> proposals = proposalRepository.getByClientId(clientDto.getId());
@@ -74,6 +75,19 @@ public class ProposalService {
 
         return GetProposalResponse.builder()
                 .proposals(proposalDtos).build();
+    }
+
+
+    //ToDo : return type must be ResponseDto !
+    public ProposalDto findById(final String id) {
+
+        Optional<Proposal> proposal = proposalRepository.findById(id);
+
+        if (proposal.isPresent()) {
+            return proposal.map(p -> ProposalDto.builder().price(p.getPrice()).build()).orElse(null);
+        }
+        throw new RuntimeException("There is no record for this Proposal id");
+
     }
 }
 
