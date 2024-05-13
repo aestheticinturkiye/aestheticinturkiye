@@ -9,6 +9,16 @@ services:
     ports:
       - "5432:5432"
 
+  services:
+    image: esthomy-backend:1.0.0
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/esthomy_db
+      SPRING_DATASOURCE_USERNAME: esthomyuser
+      SPRING_DATASOURCE_PASSWORD: esthomy2000*
+    depends_on:
+      - postgres
 
 
 
