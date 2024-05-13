@@ -2,12 +2,12 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.FindPartnerRequestDto;
+import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
-import com.dev.esthomy.models.Proposal;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.FindPartnerRequestRepository;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +71,8 @@ public class FindPartnerRequestService {
                 .preferedDate(pr.getPreferedDate())
                 .preferredCity(pr.getPreferredCity())
                 .description(pr.getDescription())
+                .proposalDtoList(pr.getProposals().stream()
+                        .map(dto -> ProposalDto.builder().price(dto.getPrice()).build()).toList())
                 .build()).toList();
 
         return GetFindPartnerRequestsResponse.builder()
