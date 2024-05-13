@@ -28,11 +28,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.headers().frameOptions().disable().and().cors().and().csrf().disable()
                 .authorizeHttpRequests(
-                        x -> x.requestMatchers("/v1/auth/**").permitAll()
+                        x -> x
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD,DispatcherType.ERROR).permitAll()
+                                .requestMatchers("/v1/auth/**").permitAll()
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
-                                .requestMatchers("/v3/swagger-ui/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v1/client").permitAll()
                                 .anyRequest().authenticated()
                 )
