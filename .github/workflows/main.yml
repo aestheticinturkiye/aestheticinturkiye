@@ -42,6 +42,6 @@ jobs:
         run: sudo docker rm -f backend || true  # Remove old container if exists
 
       - name: Run Docker Container
-        run: sudo docker run -d -p 8080:8080 --name backend --link postgres1:postgres -e SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/esthomy_db -e SPRING_DATASOURCE_USERNAME=esthomyuser -e SPRING_DATASOURCE_PASSWORD=esthomy2000* mertatag123/backendv1:latest
+        run: sudo docker run -d -p 8080:8080 --name backend --link postgres:postgres -e SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/esthomy_db -e SPRING_DATASOURCE_USERNAME=esthomyuser -e SPRING_DATASOURCE_PASSWORD=esthomy2000* mertatag123/backendv1:latest
 
         
