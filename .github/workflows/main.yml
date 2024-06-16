@@ -25,6 +25,7 @@ jobs:
         run: sudo docker login -u mertatag123 -p Mertatag123.
 
       - name: Build Docker Image
+        working-directory: backend
         run: sudo docker build -t mertatag123/backendv1 .
 
       - name: Push Docker Image
