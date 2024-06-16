@@ -36,10 +36,10 @@ jobs:
     runs-on: [self-hosted]
     steps:
       - name: Pull Image From Docker Hub
-        run: docker pull mertatag123/backendv1:latest
+        run: sudo docker pull mertatag123/backendv1:latest
 
       - name: Stop and Remove Old Container
-        run: docker rm -f backend || true  # Remove old container if exists
+        run: sudo docker rm -f backend || true  # Remove old container if exists
 
       - name: Run Docker Container
-        run: docker run -d -p 8080:8080 --name backend mertatag123/backendv1:latest
+        run: sudo docker run -d -p 8080:8080 --name backend mertatag123/backendv1:latest
