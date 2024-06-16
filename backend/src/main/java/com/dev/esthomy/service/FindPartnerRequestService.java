@@ -12,6 +12,7 @@ import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.FindPartnerRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,8 +21,9 @@ import java.util.List;
 public class FindPartnerRequestService {
     private final ClientService clientService;
     private final FindPartnerRequestRepository findPartnerRequestRepository;
+    private final StorageService storageService;
 
-    public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request) {
+    public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request, List<MultipartFile> files) {
         if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not find partner");
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
@@ -35,6 +37,10 @@ public class FindPartnerRequestService {
                 .isNeededAccommodation(request.isNeededAccommodation())
                 .isNeededTransportation(request.isNeededTransportation())
                 .build());
+
+
+        storageService.uploadFiles(principal,files,findPartnerRequest.getId());
+
 
         return CreateFindPartnerRequestResponse.builder()
                 .id(findPartnerRequest.getId())
@@ -64,13 +70,15 @@ public class FindPartnerRequestService {
     }
 
     private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {
-        final List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
+
+         List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
                 .aestheticType(pr.getAestheticType())
                 .isNeededAccommodation(pr.isNeededAccommodation())
                 .isNeededTransportation(pr.isNeededTransportation())
                 .preferedDate(pr.getPreferedDate())
                 .preferredCity(pr.getPreferredCity())
                 .description(pr.getDescription())
+                .imageUrls(storageService.getImagesUrls(pr.getId()))
                 .proposalDtoList(pr.getProposals().stream()
                         .map(dto -> ProposalDto.builder().price(dto.getPrice()).build()).toList())
                 .build()).toList();

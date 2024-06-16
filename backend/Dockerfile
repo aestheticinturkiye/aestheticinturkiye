@@ -1,4 +1,4 @@
-FROM openjdk:20 AS build
+FROM --platform=linux/amd64 openjdk:20-jdk AS build
 
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
@@ -7,7 +7,7 @@ RUN chmod +x mvnw && ./mvnw dependency:resolve
 COPY src src
 RUN ./mvnw package
 
-FROM openjdk:20
+FROM --platform=linux/amd64 openjdk:20-jdk
 WORKDIR backend
 COPY --from=build target/*.jar backend.jar
 ENTRYPOINT ["java", "-jar", "backend.jar"]

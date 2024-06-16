@@ -1,6 +1,7 @@
 package com.dev.esthomy.service;
 
 
+import com.dev.esthomy.constants.EmailTemplates;
 import com.dev.esthomy.dto.BrokerDto;
 import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.ProposalDto;
@@ -12,25 +13,30 @@ import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.Proposal;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.ProposalRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProposalService {
     private final BrokerService brokerService;
     private final ProposalRepository proposalRepository;
     private final ClientService clientService;
     private final FindPartnerRequestService findPartnerRequestService;
-
+    private final MailService mailService;
     public CreateProposalResponse create(final JwtClaims principal, final CreateProposalRequest createProposal) {
         if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
 
         final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
         final FindPartnerRequest findPartnerRequest = findPartnerRequestService.getById(createProposal.getFindPartnerRequestId());
+        final ClientDto clientDto = clientService.getById(findPartnerRequest.getClientId());
         final Proposal proposal = proposalRepository.save(
                 Proposal.builder()
                         .findPartnerRequest(findPartnerRequest)
@@ -42,6 +48,13 @@ public class ProposalService {
                         .operationDate(createProposal.getOperationDate())
                         .price(createProposal.getPrice())
                         .build());
+
+
+        try {
+            mailService.sendEmail(clientDto.getEmail(),clientDto.getName(),null, EmailTemplates.RECEIPT_MESSAGE);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error("Failed to send email. Error: " + e.getMessage());
+        }
         return CreateProposalResponse.builder()
                 .id(proposal.getId()).build();
     }

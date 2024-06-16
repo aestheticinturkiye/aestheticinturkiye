@@ -16,4 +16,5 @@ public class FindPartnerRequestDto {
     private boolean isNeededTransportation;
     private String description;
     private List<ProposalDto> proposalDtoList;
+    private List<String> imageUrls;
 }

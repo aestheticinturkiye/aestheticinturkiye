@@ -1,13 +1,16 @@
 server:
     port: 8080
 
+application:
+  bucket:
+    name: demoesthy
 jwt:
   access:
-    expiration: 5m
+    expiration: 150m
     secret:
       key: 06012000!-06042000?*-2404-2000*&
   refresh:
-    expiration: 10m
+    expiration: 150m
     secret:
       key: 06012000!-06042000?*-2404-2000*&
     issuer: aesthetics
@@ -21,7 +24,35 @@ spring:
       url: jdbc:postgresql://localhost:5432/esthomy_db
       username: esthomyuser
       password: esthomy2000*
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mertatag0@gmail.com
+    password: ptvw admc yqiu jgni
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 450MB
+      max-file-size:  50MB
 
+
+s3:
+  prefix: https://demoesthy.s3.eu-north-1.amazonaws.com/
+
+
+
+cloud:
+  aws:
+    credentials:
+      secret-key: AKIA5FTZDTY2FV2ESNS3
+      access-key: 5DYTHo9s+L33644J/1TdHRaxQ93NprA8a4/p69O5
+      region: eu-north-1
 
 cookie:
   accessTokenCookieName: ACCESS_TOKEN

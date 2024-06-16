@@ -1,5 +1,6 @@
 package com.dev.esthomy.service;
 
+import com.dev.esthomy.constants.EmailTemplates;
 import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.request.CreateClientRequest;
@@ -7,16 +8,21 @@ import com.dev.esthomy.dto.response.CreateClientResponse;
 import com.dev.esthomy.models.Client;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.ClientRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ClientService {
     private final ClientRepository clientRepository;
     private final CredentialService credentialService;
+    private final MailService mailService;
 
     public CreateClientResponse create(final CreateClientRequest request) {
         final Client client = clientRepository.save(Client.builder()
@@ -39,6 +45,12 @@ public class ClientService {
 
 
         credentialService.createCredential(credentialDto);
+
+        try {
+            mailService.sendEmail(request.getEmail(),request.getName(),null, EmailTemplates.WELCOME_MESSAGE);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            log.error("Failed to send email. Error: " + e.getMessage());
+        }
 
         return CreateClientResponse.builder()
                 .name(client.getName())
