@@ -4,8 +4,10 @@ import com.dev.esthomy.dto.ProposalDto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
-public class GetProposalResponse {
-    ProposalDto proposal;
+public class GetAllProposalsResponse {
+    private List<ProposalDto> proposals;
 }

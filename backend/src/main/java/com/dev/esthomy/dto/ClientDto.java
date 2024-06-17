@@ -1,5 +1,6 @@
 package com.dev.esthomy.dto;
 
+import com.dev.esthomy.models.Client;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +15,17 @@ public class ClientDto {
     private int age;
     private String country;
     private String gender;
+
+    public static ClientDto toDto(Client client) {
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .age(client.getAge())
+                .country(client.getCountry())
+                .build();
+    }
 
 }

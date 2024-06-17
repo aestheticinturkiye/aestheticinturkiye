@@ -1,5 +1,6 @@
 package com.dev.esthomy.dto;
 
+import com.dev.esthomy.models.Broker;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,16 @@ public class BrokerDto {
     private int age;
     private String country;
     private String gender;
+
+    public static BrokerDto toDto(Broker broker) {
+        return BrokerDto.builder()
+                .id(broker.getId())
+                .name(broker.getName())
+                .surname(broker.getSurname())
+                .email(broker.getEmail())
+                .phone(broker.getPhone())
+                .age(broker.getAge())
+                .country(broker.getCountry())
+                .build();
+    }
 }

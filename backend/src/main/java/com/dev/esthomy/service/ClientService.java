@@ -5,6 +5,9 @@ import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.request.CreateClientRequest;
 import com.dev.esthomy.dto.response.CreateClientResponse;
+import com.dev.esthomy.dto.response.GetClientResponse;
+import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Client;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.ClientRepository;
@@ -67,7 +70,7 @@ public class ClientService {
                 .surname(b.getSurname())
                 .email(b.getEmail())
                 .age(b.getAge())
-                .build()).orElseThrow(() -> new RuntimeException("Client not found"));
+                .build()).orElseThrow(() -> new BusinessException("Client not found"));
     }
 
     public ClientDto getById(final String id) {
@@ -79,7 +82,13 @@ public class ClientService {
                 .surname(b.getSurname())
                 .email(b.getEmail())
                 .age(b.getAge())
-                .build()).orElseThrow(() -> new RuntimeException("Client not found"));
+                .build()).orElseThrow(() -> new BusinessException("Client not found"));
     }
 
+    public GetClientResponse getClient(final JwtClaims principal) {
+        final Client client = clientRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException("Client not found"));
+        return GetClientResponse.builder()
+                .client(ClientDto.toDto(client))
+                .build();
+    }
 }
