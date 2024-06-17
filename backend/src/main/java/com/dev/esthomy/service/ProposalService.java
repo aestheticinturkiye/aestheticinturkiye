@@ -7,6 +7,7 @@ import com.dev.esthomy.dto.ClientDto;
 import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateProposalRequest;
 import com.dev.esthomy.dto.response.CreateProposalResponse;
+import com.dev.esthomy.dto.response.GetAllProposalsResponse;
 import com.dev.esthomy.dto.response.GetProposalResponse;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
@@ -32,7 +33,7 @@ public class ProposalService {
     private final FindPartnerRequestService findPartnerRequestService;
     private final MailService mailService;
     public CreateProposalResponse create(final JwtClaims principal, final CreateProposalRequest createProposal) {
-        if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
+        if (MemberRole.CLIENT.equals(principal.getRole())) throw new RuntimeException("You can not send proposal");
 
         final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
         final FindPartnerRequest findPartnerRequest = findPartnerRequestService.getById(createProposal.getFindPartnerRequestId());
@@ -49,33 +50,62 @@ public class ProposalService {
                         .price(createProposal.getPrice())
                         .build());
 
-
         try {
             mailService.sendEmail(clientDto.getEmail(),clientDto.getName(),null, EmailTemplates.RECEIPT_MESSAGE);
         } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("Failed to send email. Error: " + e.getMessage());
         }
+
         return CreateProposalResponse.builder()
                 .id(proposal.getId()).build();
     }
 
-    public GetProposalResponse get(JwtClaims principal) {
-        if (!principal.getRole().equals(MemberRole.BROKER)) throw new RuntimeException("You can not send proposal");
-        final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
-        final List<Proposal> proposals = proposalRepository.getByBrokerId(brokerDto.getId());
-        return getProposalResponse(proposals);
+    public GetProposalResponse get(final JwtClaims principal, final String id) {
+        final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no record for this Proposal id"));
+        final MemberRole role = principal.getRole();
 
+        if (MemberRole.BROKER.equals(role)) {
+            final BrokerDto broker = brokerService.getByEmail(principal.getEmail());
+            if (broker.getId().equals(proposal.getBrokerId())) {
+                return GetProposalResponse.builder()
+                        .proposal(ProposalDto.toDto(proposal))
+                        .build();
+            }
+            log.error("broker ids not matched. brokerId: {}, proposalBrokerId: {}", broker.getId(), proposal.getBrokerId());
+        }
+
+        if (MemberRole.CLIENT.equals(role)) {
+            final ClientDto client = clientService.getByEmail(principal.getEmail());
+            if (client.getId().equals(proposal.getClientId())) {
+                return GetProposalResponse.builder()
+                        .proposal(ProposalDto.toDto(proposal))
+                        .build();
+            }
+            log.error("broker ids not matched. brokerId: {}, proposalClientId: {}", client.getId(), proposal.getBrokerId());
+        }
+
+        throw new RuntimeException("You can not see this proposal");
     }
 
-    public GetProposalResponse getByClientId(JwtClaims principal) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not send proposal");
-        final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
-        final List<Proposal> proposals = proposalRepository.getByClientId(clientDto.getId());
-        return getProposalResponse(proposals);
+    public GetAllProposalsResponse getAll(final JwtClaims principal) {
+        final MemberRole role = principal.getRole();
+        log.info("role: {}", role.getValue());
 
+        switch (role) {
+            case CLIENT:
+                final ClientDto client = clientService.getByEmail(principal.getEmail());
+                final List<Proposal> proposals = proposalRepository.getByClientId(client.getId());
+                return getProposalResponse(proposals);
+            case BROKER:
+                final BrokerDto broker = brokerService.getByEmail(principal.getEmail());
+                final List<Proposal> brokerProposals = proposalRepository.getByBrokerId(broker.getId());
+                return getProposalResponse(brokerProposals);
+            default:
+                throw new RuntimeException("An unexpected error occurred.");
+        }
     }
 
-    public GetProposalResponse getProposalResponse(List<Proposal> proposals) {
+    public GetAllProposalsResponse getProposalResponse(List<Proposal> proposals) {
         final List<ProposalDto> proposalDtos = proposals.stream().map(pr -> ProposalDto.builder()
                 .price(pr.getPrice())
                 .operationDate(pr.getOperationDate())
@@ -86,12 +116,10 @@ public class ProposalService {
                 .description(pr.getDescription())
                 .build()).toList();
 
-        return GetProposalResponse.builder()
+        return GetAllProposalsResponse.builder()
                 .proposals(proposalDtos).build();
     }
 
-
-    //ToDo : return type must be ResponseDto !
     public ProposalDto findById(final String id) {
 
         Optional<Proposal> proposal = proposalRepository.findById(id);

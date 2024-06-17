@@ -3,7 +3,10 @@ package com.dev.esthomy.service;
 import com.dev.esthomy.dto.BrokerDto;
 import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.request.CreateBrokerRequest;
+import com.dev.esthomy.dto.request.GetBrokerResponse;
 import com.dev.esthomy.dto.response.CreateBrokerResponse;
+import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Broker;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.BrokerRepository;
@@ -63,4 +66,11 @@ public class BrokerService {
                     .email(b.getEmail())
                     .build()).orElseThrow(() -> new RuntimeException("Broker not found"));
         }
+
+    public GetBrokerResponse getBroker(final JwtClaims principal) {
+        final Broker broker = brokerRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException("Broker not found"));
+        return GetBrokerResponse.builder()
+                .broker(BrokerDto.toDto(broker))
+                .build();
     }
+}

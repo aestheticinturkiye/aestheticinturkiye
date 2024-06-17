@@ -7,6 +7,7 @@ import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.authentication.request.AuthenticateWithRefreshTokenResponse;
 import com.dev.esthomy.dto.authentication.request.LoginRequest;
 import com.dev.esthomy.dto.authentication.response.LoginResponse;
+import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.jwt.builder.JwtTokenBuilder;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.jwt.model.JwtTokens;
@@ -37,7 +38,7 @@ public class LoginService {
         final CredentialDto credentialDto = credentialService.checkCredentialOptional(request);
         final MemberRole role = credentialDto.getRole();
         AccountDto accountDto = null;
-        if (role.equals(BROKER)) {
+        if (BROKER.equals(role)) {
             final BrokerDto brokerDto = brokerService.getByEmail(credentialDto.getEmail());
             accountDto = AccountDto.builder()
                     .email(brokerDto.getEmail())
@@ -46,13 +47,17 @@ public class LoginService {
                     .build();
         }
 
-        if (role.equals(CLIENT)) {
+        if (CLIENT.equals(role)) {
             final ClientDto clientDto = clientService.getByEmail(credentialDto.getEmail());
             accountDto = AccountDto.builder()
                     .email(clientDto.getEmail())
                     .role(CLIENT)
                     .id(clientDto.getId())
                     .build();
+        }
+
+        if (accountDto == null) {
+            throw new BusinessException("Account not found");
         }
 
         final JwtTokens jwtTokens = jwtTokenBuilder.build(JwtClaims.builder()

@@ -1,6 +1,7 @@
 package com.dev.esthomy.dto;
 
 
+import com.dev.esthomy.models.Proposal;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,4 +19,17 @@ public class ProposalDto {
     private String transportation;
     private String hospital;
     private String description;
+
+    public static ProposalDto toDto(final Proposal proposal) {
+        return ProposalDto.builder()
+                .id(proposal.getId())
+                .price(proposal.getPrice())
+                .operationDate(proposal.getOperationDate())
+                .accommodation(proposal.getAccommodation())
+                .city(proposal.getCity())
+                .transportation(proposal.getTransportation())
+                .hospital(proposal.getHospital())
+                .description(proposal.getDescription())
+                .build();
+    }
 }

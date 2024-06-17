@@ -21,4 +21,5 @@ public enum MemberRole {
         }
         return null;
     }
+
 }
