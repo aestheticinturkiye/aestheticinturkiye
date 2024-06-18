@@ -27,14 +27,14 @@ export const Header = () => {
                 <SectionContainer className="flex items-center ml-auto">
                     <Nav />
                     <ButtonGroup className="hidden md:block">
-                        <a
+                        <Link
                             role="button"
                             href="/#footer-email"
                             className="btn btn--secondary ml-4"
                         >
                             Newsletter
                             <Icon icon="material-symbols:arrow-forward-rounded" />
-                        </a>
+                        </Link>
                     </ButtonGroup>
                 </SectionContainer>
             </SectionContainer>
