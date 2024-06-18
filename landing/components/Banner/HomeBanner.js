@@ -1,13 +1,41 @@
-import { BadgeGroup, BadgeIcon, BadgeMessage } from "@components/Badge";
-import { Button, ButtonGroup } from "@components/Button";
+import { useState } from "react";
+import { BadgeGroup, BadgeMessage } from "@components/Badge";
 import { Content } from "@components/Content";
-import { MotionBTTContainer, MotionInfiniteImage } from "@components/Motion";
+import { MotionBTTContainer } from "@components/Motion";
 import { SectionContainer } from "@components/Section";
 import { PageTitle } from "@components/Title";
-import { Icon } from "@iconify/react";
 import Image from "next/image";
 
 export const HomeBanner = () => {
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage("");
+
+        try {
+            const res = await fetch("/api/subscribe", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                setMessage("Subscription successful!");
+                setEmail("");
+            } else {
+                setMessage(result.message || "Subscription failed.");
+            }
+        } catch (error) {
+            setMessage("An error occurred. Please try again.");
+        }
+    };
+
     return (
         <SectionContainer className="page-banner--container py-16">
             <SectionContainer className="page-banner--inner-container wrap wrap-px z-10">
@@ -32,18 +60,35 @@ export const HomeBanner = () => {
                             Clinics for Hair Transplants, Dentistry, and More
                         </p>
                     </Content>
-                    <div className="mt-6 mb-16 text-center">
-                        <ButtonGroup alignment="center">
-                            <Button href="#features">Features</Button>
-                            <a
-                                role="button"
-                                href=""
-                                className="btn btn--secondary"
+                    <div className="mt-6 mb-16 text-center ">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="email-subscription-form"
+                        >
+                            <div
+                                id="banner-email"
+                                className="flex gap-4 justify-center align-center"
                             >
-                                Get Template
-                                <Icon icon="material-symbols:arrow-forward-rounded" />
-                            </a>
-                        </ButtonGroup>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    color="gray"
+                                    className="w-96 focus:border-[#F4F4F4] border-solid border border-3 rounded p-2"
+                                    placeholder="Enter your email"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className="btn btn--secondary"
+                                >
+                                    Subscribe
+                                </button>
+                            </div>
+                            {message && <p>{message}</p>}
+                        </form>
                     </div>
                 </MotionBTTContainer>
                 {/* Appear Fourth */}

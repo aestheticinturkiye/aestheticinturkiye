@@ -21,7 +21,7 @@ export default function Home() {
     return (
         <Layout className="">
             <SEO
-                title="Esthomy - A landing page template 🚀"
+                title="Esthomy"
                 description="Discover Esthomy, Transform Your Look with World-Class Aesthetic Treatments in Turkey"
             />
             <div className="main-wrapper bg-[#F3F5F8] relative z-10 pb-20 pt-20 ">

@@ -29,10 +29,10 @@ export const Header = () => {
                     <ButtonGroup className="hidden md:block">
                         <a
                             role="button"
-                            href=""
+                            href="/#footer-email"
                             className="btn btn--secondary ml-4"
                         >
-                            Get Template
+                            Newsletter
                             <Icon icon="material-symbols:arrow-forward-rounded" />
                         </a>
                     </ButtonGroup>

@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { SectionContainer } from "@components/Section";
 import Link from "next/link";
 import Image from "next/image";
-import { ButtonGroup } from "@components/Button";
-import { Icon } from "@iconify/react";
 
 const DATA = [
     {
@@ -50,8 +49,36 @@ const DATA = [
 ];
 
 export const Footer = () => {
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
     const date = new Date();
     const year = date.getFullYear();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setMessage("");
+
+        try {
+            const res = await fetch("/api/subscribe", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                setMessage("Subscription successful!");
+                setEmail("");
+            } else {
+                setMessage(result.message || "Subscription failed.");
+            }
+        } catch (error) {
+            setMessage("An error occurred. Please try again.");
+        }
+    };
 
     return (
         <footer id="footer" className="bg-white">
@@ -70,16 +97,6 @@ export const Footer = () => {
                                     priority
                                 />
                             </Link>
-                            <ButtonGroup alignment="left">
-                                <a
-                                    role="button"
-                                    href=""
-                                    className="btn btn--secondary"
-                                >
-                                    Get Template
-                                    <Icon icon="material-symbols:arrow-forward-rounded" />
-                                </a>
-                            </ButtonGroup>
                         </div>
                     </div>
 
@@ -114,10 +131,12 @@ export const Footer = () => {
                     </div>
 
                     {/* Email Subscription Form */}
-                    <div className="col-span-12 md:col-span-5">
+                    <div
+                        id="footer-email"
+                        className="col-span-12 md:col-span-5"
+                    >
                         <form
-                            action="/api/subscribe"
-                            method="POST"
+                            onSubmit={handleSubmit}
                             className="email-subscription-form"
                         >
                             <h3 className="font-bold text-base mb-2">
@@ -128,6 +147,8 @@ export const Footer = () => {
                                     type="email"
                                     name="email"
                                     id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     color="gray"
                                     className="focus:border-[#F4F4F4] border-solid border-[#F3F5F8] border border-3 rounded p-2"
                                     placeholder="Enter your email"
@@ -140,6 +161,7 @@ export const Footer = () => {
                                     Subscribe
                                 </button>
                             </div>
+                            {message && <p>{message}</p>}
                         </form>
                     </div>
                 </div>

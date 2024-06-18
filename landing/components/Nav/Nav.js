@@ -6,13 +6,13 @@ import { useRouter } from "next/router";
 const navigation = [
     { name: "Features", to: "#features", href: "/#features" },
     { name: "Testimonials", to: "#testimonials", href: "/#testimonials" },
-    { name: "FAQ?", to: "#faq", href: "/#faq" },
-    {
-        name: "Contact",
-        href: "",
-        isArrow: true,
-        target: "_blank"
-    }
+    { name: "FAQ?", to: "#faq", href: "/#faq" }
+    // {
+    //     name: "Contact",
+    //     href: "/#banner-email",
+    //     isArrow: true
+    //     // target: "_blank"
+    // }
 ];
 
 export const Nav = () => {
