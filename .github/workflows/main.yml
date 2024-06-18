@@ -50,6 +50,13 @@ jobs:
       - name: Push Broker Docker Image
         run: sudo docker push mertatag123/brokerv1:latest
 
+      - name: Build Landing Docker Image
+        working-directory: landing
+        run: sudo docker build -t mertatag123/landingv1 .
+
+      - name: Push Landing Docker Image
+        run: sudo docker push mertatag123/landingv1:latest
+
   deploy:
     needs: build
     runs-on: [self-hosted]
@@ -63,6 +70,9 @@ jobs:
       - name: Pull Broker Image From Docker Hub
         run: sudo docker pull mertatag123/brokerv1:latest
 
+      - name: Pull Landing Image From Docker Hub
+        run: sudo docker pull mertatag123/landingv1:latest
+
       - name: Stop and Remove Old Backend Container
         run: sudo docker rm -f backend || true  # Remove old container if exists
 
@@ -73,10 +83,16 @@ jobs:
         run: sudo docker rm -f client || true  # Remove old container if exists
 
       - name: Run Client Docker Container
-        run: sudo docker run -d -p 5174:80 --name client mertatag123/clientv1:latest
+        run: sudo docker run -d -p 5174:5174 --name client mertatag123/clientv1:latest
 
       - name: Stop and Remove Old Broker Container
         run: sudo docker rm -f broker || true  # Remove old container if exists
 
       - name: Run Broker Docker Container
-        run: sudo docker run -d -p 5173:80 --name broker mertatag123/brokerv1:latest
+        run: sudo docker run -d -p 5173:5173 --name broker mertatag123/brokerv1:latest
+
+      - name: Stop and Remove Old Landing Container
+        run: sudo docker rm -f landing || true  # Remove old container if exists
+
+      - name: Run Broker Docker Container
+        run: sudo docker run -d -p 3000:3000 --name landing mertatag123/landing:latest
