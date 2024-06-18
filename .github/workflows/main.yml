@@ -95,4 +95,4 @@ jobs:
         run: sudo docker rm -f landing || true  # Remove old container if exists
 
       - name: Run Broker Docker Container
-        run: sudo docker run -d -p 3000:3000 --name landing mertatag123/landing:latest
+        run: sudo docker run -d -p 3000:3000 --name landing mertatag123/landingv1:latest
