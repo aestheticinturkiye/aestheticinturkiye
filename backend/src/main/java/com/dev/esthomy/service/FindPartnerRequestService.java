@@ -5,10 +5,13 @@ import com.dev.esthomy.dto.FindPartnerRequestDto;
 import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
+import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
+import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.enums.MemberRole;
+import com.dev.esthomy.repository.FindPartnerRequestDataAdapter;
 import com.dev.esthomy.repository.FindPartnerRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +25,11 @@ public class FindPartnerRequestService {
     private final ClientService clientService;
     private final FindPartnerRequestRepository findPartnerRequestRepository;
     private final StorageService storageService;
+    private final FindPartnerRequestDataAdapter findPartnerRequestDataAdapter;
+    private final BrokerService brokerService;
 
     public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request, List<MultipartFile> files) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not find partner");
+        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException("You can not find partner");
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
@@ -49,7 +54,7 @@ public class FindPartnerRequestService {
 
     public GetFindPartnerRequestsResponse get(final JwtClaims principal) {
         if (!principal.getRole().equals(MemberRole.CLIENT))
-            throw new RuntimeException("You can not reach find partner requests");
+            throw new BusinessException("You can not reach find partner requests");
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
@@ -59,14 +64,13 @@ public class FindPartnerRequestService {
     }
 
 
-    public GetFindPartnerRequestsResponse getAll(final JwtClaims principal) {
+    public GetFindPartnerRequestsPageable getAll(final JwtClaims principal,
+                                                 final int pageSize,
+                                                 final int pageNumber) {
         if (!principal.getRole().equals(MemberRole.BROKER))
-            throw new RuntimeException("You can not reach find partner requests");
+            throw new BusinessException("You can not reach find partner requests");
 
-
-        final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.findAll();
-
-        return getGetFindPartnerRequestsResponse(partnerRequests);
+        return findPartnerRequestDataAdapter.getFindPartnerRequestPageable(pageSize, pageNumber);
     }
 
     private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {

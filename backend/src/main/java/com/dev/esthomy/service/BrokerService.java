@@ -41,6 +41,7 @@ public class BrokerService {
 
         credentialservice.createCredential(credentialDto);
         return CreateBrokerResponse.builder()
+                .id(broker.getId())
                 .name(broker.getName())
                 .email(broker.getEmail()).build();
     }

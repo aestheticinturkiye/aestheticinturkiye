@@ -1,6 +1,6 @@
 package com.dev.esthomy.config;
 
-import jakarta.servlet.DispatcherType;
+import com.dev.esthomy.filter.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,7 +16,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig implements WebMvcConfigurer {
-    public WebSecurityConfig() {
+    private final JwtTokenFilter jwtTokenFilter;
+
+    public WebSecurityConfig(final JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Bean
@@ -23,7 +27,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return http.headers().frameOptions().disable().and().cors().and().csrf().disable()
                 .authorizeHttpRequests(
                         x -> x.requestMatchers("/v1/auth/**").permitAll()
-                                .dispatcherTypeMatchers(DispatcherType.FORWARD,DispatcherType.ERROR).permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v1/client").permitAll()
@@ -31,6 +34,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

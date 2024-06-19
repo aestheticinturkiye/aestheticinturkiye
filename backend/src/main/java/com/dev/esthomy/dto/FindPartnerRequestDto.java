@@ -1,5 +1,6 @@
 package com.dev.esthomy.dto;
 
+import com.dev.esthomy.models.FindPartnerRequest;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,4 +20,16 @@ public class FindPartnerRequestDto {
     private List<ProposalDto> proposalDtoList;
     private List<String> imageUrls;
     private ClientDto client;
+
+    public static FindPartnerRequestDto toDto(FindPartnerRequest findPartnerRequest) {
+        return FindPartnerRequestDto.builder()
+                .id(findPartnerRequest.getId())
+                .aestheticType(findPartnerRequest.getAestheticType())
+                .preferedDate(findPartnerRequest.getPreferedDate())
+                .preferredCity(findPartnerRequest.getPreferredCity())
+                .isNeededAccommodation(findPartnerRequest.isNeededAccommodation())
+                .isNeededTransportation(findPartnerRequest.isNeededTransportation())
+                .description(findPartnerRequest.getDescription())
+                .build();
+    }
 }
