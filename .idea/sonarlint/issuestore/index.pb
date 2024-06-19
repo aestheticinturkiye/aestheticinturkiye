@@ -174,3 +174,5 @@ z
 Jbackend/src/main/java/com/dev/esthomy/dto/request/CreateBrokerRequest.java,4/3/431c1fa6dfc940f35933af320b0d1b576211c594
 |
 Lbackend/src/main/java/com/dev/esthomy/dto/response/CreateBrokerResponse.java,0/0/009bba8462dab4cb09092e5072d4534663ea1301
+•
+ebackend/src/main/java/com/dev/esthomy/dto/response/GetFindPartnerRequestsPageableAdapterResponse.java,9/4/94d0d440cb2887d7b77955d7babbf6ad8075127b
