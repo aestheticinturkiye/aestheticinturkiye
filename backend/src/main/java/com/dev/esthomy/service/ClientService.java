@@ -27,6 +27,9 @@ public class ClientService {
     private final MailService mailService;
 
     public CreateClientResponse create(final CreateClientRequest request) {
+        //check email if exist in db throw exception
+        credentialService.isExist(request.getEmail());
+
         final Client client = clientRepository.save(Client.builder()
                 .age(request.getAge())
                 .country(request.getCountry())

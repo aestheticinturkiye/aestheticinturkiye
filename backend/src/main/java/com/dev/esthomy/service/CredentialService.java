@@ -24,7 +24,7 @@ public class CredentialService {
                         .build()).orElseThrow(() -> new BusinessException("Credential Not Found."));
 
         if (!checkPassword(credentialDto, request)) {
-            throw new RuntimeException("Incorrect password.");
+            throw new BusinessException("Incorrect password.");
         }
 
         return credentialDto;
@@ -41,5 +41,11 @@ public class CredentialService {
 
     private boolean checkPassword(final CredentialDto credentialDto, final LoginRequest request) {
         return request.getPassword().equals(credentialDto.getPassword());
+    }
+
+    public void isExist(final String email) {
+        if (credentialRepository.findCredentialByEmailAndStatus(email, CredentialStatus.ACTIVE).isPresent()) {
+            throw new BusinessException("Email already exist");
+        }
     }
 }
