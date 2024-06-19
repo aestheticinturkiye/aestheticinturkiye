@@ -3,7 +3,6 @@ package com.dev.esthomy.controller;
 import com.dev.esthomy.dto.request.CreateClientRequest;
 import com.dev.esthomy.dto.response.CreateClientResponse;
 import com.dev.esthomy.dto.response.GetClientResponse;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,8 @@ public class ClientController {
         return ResponseEntity.ok().body(clientService.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<GetClientResponse> getClient(final JwtClaims principal) {
-        return ResponseEntity.ok().body(clientService.getClient(principal));
+    @GetMapping("{id}")
+    public ResponseEntity<GetClientResponse> getClient(@PathVariable final String id) {
+        return ResponseEntity.ok().body(clientService.getClient(id));
     }
 }

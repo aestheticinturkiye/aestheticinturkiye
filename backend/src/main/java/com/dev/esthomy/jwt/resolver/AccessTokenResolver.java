@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-
 public class AccessTokenResolver {
     private final JwtParser jwtParser;
 
