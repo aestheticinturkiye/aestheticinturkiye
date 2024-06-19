@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -27,8 +26,26 @@ public class FindPartnerRequestDataAdapter {
         final Page<FindPartnerRequest> findPartnerRequestPage = findPartnerRequestRepository.findAll(pageable);
 
         final List<FindPartnerRequestDto> findPartnerRequestList = findPartnerRequestPage.getContent()
-                .stream().map(FindPartnerRequestDto::toDto).collect(Collectors.toList());
+                .stream().map(FindPartnerRequestDto::toDto).toList();
 
+
+        return GetFindPartnerRequestsPageable.builder()
+                .list(findPartnerRequestList)
+                .totalPages(findPartnerRequestPage.getTotalPages())
+                .totalElements(findPartnerRequestPage.getTotalElements())
+                .build();
+    }
+
+    public GetFindPartnerRequestsPageable getClientFindPartnerRequestPageable(final String clientId,
+                                                                              final int pageSize,
+                                                                              final int pageNumber) {
+        final Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
+
+        final Page<FindPartnerRequest> findPartnerRequestPage = findPartnerRequestRepository
+                .findAll(findPartnerRequestSpecification.getClientFindPartnerRequestSpecification(clientId), pageable);
+
+        final List<FindPartnerRequestDto> findPartnerRequestList = findPartnerRequestPage.getContent()
+                .stream().map(FindPartnerRequestDto::toDto).toList();
 
         return GetFindPartnerRequestsPageable.builder()
                 .list(findPartnerRequestList)

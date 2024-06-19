@@ -52,15 +52,15 @@ public class FindPartnerRequestService {
                 .build();
     }
 
-    public GetFindPartnerRequestsResponse get(final JwtClaims principal) {
+    public GetFindPartnerRequestsPageable get(final JwtClaims principal,
+                                              final int pageSize,
+                                              final int pageNumber) {
         if (!principal.getRole().equals(MemberRole.CLIENT))
             throw new BusinessException("You can not reach find partner requests");
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
-        final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.getByClientId(clientDto.getId());
-
-        return getGetFindPartnerRequestsResponse(partnerRequests);
+        return findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(clientDto.getId(), pageSize, pageNumber);
     }
 
 

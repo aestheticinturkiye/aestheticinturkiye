@@ -3,10 +3,11 @@ package com.dev.esthomy.repository;
 import com.dev.esthomy.models.FindPartnerRequest;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, String> {
+public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, String>, JpaSpecificationExecutor<FindPartnerRequest> {
 
 
     @EntityGraph(value = "FindPartnerRequest.proposals", type = EntityGraph.EntityGraphType.LOAD)
