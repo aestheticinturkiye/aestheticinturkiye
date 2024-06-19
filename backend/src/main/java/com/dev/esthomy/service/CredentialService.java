@@ -2,6 +2,7 @@ package com.dev.esthomy.service;
 
 import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.authentication.request.LoginRequest;
+import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.models.Credential;
 import com.dev.esthomy.models.enums.CredentialStatus;
 import com.dev.esthomy.repository.CredentialRepository;
@@ -20,7 +21,7 @@ public class CredentialService {
                         .email(c.getEmail())
                         .password(c.getPassword())
                         .role(c.getMemberRole())
-                        .build()).orElseThrow(() -> new RuntimeException("Credential Not Found."));
+                        .build()).orElseThrow(() -> new BusinessException("Credential Not Found."));
 
         if (!checkPassword(credentialDto, request)) {
             throw new RuntimeException("Incorrect password.");
