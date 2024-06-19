@@ -1,7 +1,6 @@
 package com.dev.esthomy.repository;
 
-import com.dev.esthomy.dto.FindPartnerRequestDto;
-import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
+import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageableAdapterResponse;
 import com.dev.esthomy.models.FindPartnerRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,9 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -20,18 +16,29 @@ public class FindPartnerRequestDataAdapter {
     private final FindPartnerRequestSpecification findPartnerRequestSpecification;
     private final FindPartnerRequestRepository findPartnerRequestRepository;
 
-    public GetFindPartnerRequestsPageable getFindPartnerRequestPageable(final int pageSize,
-                                                                        final int pageNumber) {
+    public GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestPageable(final int pageSize,
+                                                                                       final int pageNumber) {
         final Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
 
         final Page<FindPartnerRequest> findPartnerRequestPage = findPartnerRequestRepository.findAll(pageable);
 
-        final List<FindPartnerRequestDto> findPartnerRequestList = findPartnerRequestPage.getContent()
-                .stream().map(FindPartnerRequestDto::toDto).collect(Collectors.toList());
+        return GetFindPartnerRequestsPageableAdapterResponse.builder()
+                .list(findPartnerRequestPage.getContent())
+                .totalPages(findPartnerRequestPage.getTotalPages())
+                .totalElements(findPartnerRequestPage.getTotalElements())
+                .build();
+    }
 
+    public GetFindPartnerRequestsPageableAdapterResponse getClientFindPartnerRequestPageable(final String clientId,
+                                                                                             final int pageSize,
+                                                                                             final int pageNumber) {
+        final Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
 
-        return GetFindPartnerRequestsPageable.builder()
-                .list(findPartnerRequestList)
+        final Page<FindPartnerRequest> findPartnerRequestPage = findPartnerRequestRepository
+                .findAll(findPartnerRequestSpecification.getClientFindPartnerRequestSpecification(clientId), pageable);
+
+        return GetFindPartnerRequestsPageableAdapterResponse.builder()
+                .list(findPartnerRequestPage.getContent())
                 .totalPages(findPartnerRequestPage.getTotalPages())
                 .totalElements(findPartnerRequestPage.getTotalElements())
                 .build();

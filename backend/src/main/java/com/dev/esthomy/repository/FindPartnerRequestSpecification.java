@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FindPartnerRequestSpecification {
-    public Specification<FindPartnerRequest> getFindPartnerRequestSpecification() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), "PENDING");
+
+    public Specification<FindPartnerRequest> getClientFindPartnerRequestSpecification(final String clientId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("clientId"), clientId);
     }
 }

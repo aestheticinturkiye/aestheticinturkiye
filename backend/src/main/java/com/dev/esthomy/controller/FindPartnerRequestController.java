@@ -3,7 +3,6 @@ package com.dev.esthomy.controller;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
-import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.service.FindPartnerRequestService;
 import com.dev.esthomy.util.ObjectConverter;
@@ -32,8 +31,10 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping
-    public ResponseEntity<GetFindPartnerRequestsResponse> get(@AuthenticationPrincipal JwtClaims principal) {
-        return ResponseEntity.ok().body(findPartnerRequestService.get(principal));
+    public ResponseEntity<GetFindPartnerRequestsPageable> get(@AuthenticationPrincipal JwtClaims principal,
+                                                              @RequestParam(value = "size", defaultValue = "20") final int pageSize,
+                                                              @RequestParam(value = "page", defaultValue = "0") final int pageNumber) {
+        return ResponseEntity.ok().body(findPartnerRequestService.get(principal, pageSize, pageNumber));
     }
 
     @GetMapping("/all")

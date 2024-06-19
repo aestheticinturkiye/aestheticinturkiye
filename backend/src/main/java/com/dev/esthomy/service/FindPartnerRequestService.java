@@ -6,7 +6,7 @@ import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
-import com.dev.esthomy.dto.response.GetFindPartnerRequestsResponse;
+import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageableAdapterResponse;
 import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
@@ -26,7 +26,6 @@ public class FindPartnerRequestService {
     private final FindPartnerRequestRepository findPartnerRequestRepository;
     private final StorageService storageService;
     private final FindPartnerRequestDataAdapter findPartnerRequestDataAdapter;
-    private final BrokerService brokerService;
 
     public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request, List<MultipartFile> files) {
         if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException("You can not find partner");
@@ -43,24 +42,28 @@ public class FindPartnerRequestService {
                 .isNeededTransportation(request.isNeededTransportation())
                 .build());
 
-
         storageService.uploadFiles(principal, files, findPartnerRequest.getId());
-
 
         return CreateFindPartnerRequestResponse.builder()
                 .id(findPartnerRequest.getId())
                 .build();
     }
 
-    public GetFindPartnerRequestsResponse get(final JwtClaims principal) {
+    public GetFindPartnerRequestsPageable get(final JwtClaims principal,
+                                              final int pageSize,
+                                              final int pageNumber) {
         if (!principal.getRole().equals(MemberRole.CLIENT))
             throw new BusinessException("You can not reach find partner requests");
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
-        final List<FindPartnerRequest> partnerRequests = findPartnerRequestRepository.getByClientId(clientDto.getId());
+        final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageableAdapterResponse = findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(clientDto.getId(), pageSize, pageNumber);
 
-        return getGetFindPartnerRequestsResponse(partnerRequests);
+        return GetFindPartnerRequestsPageable.builder()
+                .list(findPartnerRequestList(getFindPartnerRequestsPageableAdapterResponse.getList()))
+                .totalPages(getFindPartnerRequestsPageableAdapterResponse.getTotalPages())
+                .totalElements(getFindPartnerRequestsPageableAdapterResponse.getTotalElements())
+                .build();
     }
 
 
@@ -70,12 +73,18 @@ public class FindPartnerRequestService {
         if (!principal.getRole().equals(MemberRole.BROKER))
             throw new BusinessException("You can not reach find partner requests");
 
-        return findPartnerRequestDataAdapter.getFindPartnerRequestPageable(pageSize, pageNumber);
+        final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageable = findPartnerRequestDataAdapter.getFindPartnerRequestPageable(pageSize, pageNumber);
+
+        return GetFindPartnerRequestsPageable.builder()
+                .list(findPartnerRequestList(getFindPartnerRequestsPageable.getList()))
+                .totalPages(getFindPartnerRequestsPageable.getTotalPages())
+                .totalElements(getFindPartnerRequestsPageable.getTotalElements())
+                .build();
     }
 
-    private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {
+    private List<FindPartnerRequestDto> findPartnerRequestList(final List<FindPartnerRequest> partnerRequests) {
 
-        List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
+        return partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
                 .id(pr.getId())
                 .aestheticType(pr.getAestheticType())
                 .isNeededAccommodation(pr.isNeededAccommodation())
@@ -89,9 +98,6 @@ public class FindPartnerRequestService {
                 .client(getClient(pr.getClientId()))
                 .build()).toList();
 
-        return GetFindPartnerRequestsResponse.builder()
-                .data(partnerRequestDtos)
-                .build();
     }
 
     private ClientDto getClient(final String clientId) {
