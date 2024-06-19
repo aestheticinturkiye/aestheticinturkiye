@@ -16,7 +16,7 @@ public class BrokerDto {
     private String country;
     private String gender;
 
-    public static BrokerDto toDto(Broker broker) {
+    public static BrokerDto toDto(final Broker broker) {
         return BrokerDto.builder()
                 .id(broker.getId())
                 .name(broker.getName())
