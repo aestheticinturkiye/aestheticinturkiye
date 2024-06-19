@@ -24,8 +24,7 @@ public class OperationController {
     }
 
     @GetMapping
-    public ResponseEntity<Optional<OperationDto>> get(final String operationId) {
-
+    public ResponseEntity<Optional<OperationDto>> get(@RequestHeader("operation-id") final String operationId) {
         return ResponseEntity.ok().body(operationService.getByOperationId(operationId));
     }
 }
