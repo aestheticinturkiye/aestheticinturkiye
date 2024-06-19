@@ -17,17 +17,17 @@ public class ObjectConverter implements Converter<String, CreateFindPartnerReque
 
     @Override
     @SneakyThrows
-    public CreateFindPartnerRequest convert(String source){
-        return objectMapper.readValue(source,CreateFindPartnerRequest.class);
+    public CreateFindPartnerRequest convert(final String source) {
+        return objectMapper.readValue(source, CreateFindPartnerRequest.class);
     }
 
     @Override
-    public JavaType getInputType(TypeFactory typeFactory) {
+    public JavaType getInputType(final TypeFactory typeFactory) {
         return null;
     }
 
     @Override
-    public JavaType getOutputType(TypeFactory typeFactory) {
+    public JavaType getOutputType(final TypeFactory typeFactory) {
         return null;
     }
 }

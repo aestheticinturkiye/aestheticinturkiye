@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class FindPartnerRequestDto {
+    private String id;
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;
@@ -17,4 +18,5 @@ public class FindPartnerRequestDto {
     private String description;
     private List<ProposalDto> proposalDtoList;
     private List<String> imageUrls;
+    private ClientDto client;
 }

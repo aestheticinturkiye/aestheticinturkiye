@@ -39,7 +39,7 @@ public class FindPartnerRequestService {
                 .build());
 
 
-        storageService.uploadFiles(principal,files,findPartnerRequest.getId());
+        storageService.uploadFiles(principal, files, findPartnerRequest.getId());
 
 
         return CreateFindPartnerRequestResponse.builder()
@@ -71,7 +71,8 @@ public class FindPartnerRequestService {
 
     private GetFindPartnerRequestsResponse getGetFindPartnerRequestsResponse(final List<FindPartnerRequest> partnerRequests) {
 
-         List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
+        List<FindPartnerRequestDto> partnerRequestDtos = partnerRequests.stream().map(pr -> FindPartnerRequestDto.builder()
+                .id(pr.getId())
                 .aestheticType(pr.getAestheticType())
                 .isNeededAccommodation(pr.isNeededAccommodation())
                 .isNeededTransportation(pr.isNeededTransportation())
@@ -81,11 +82,16 @@ public class FindPartnerRequestService {
                 .imageUrls(storageService.getImagesUrls(pr.getId()))
                 .proposalDtoList(pr.getProposals().stream()
                         .map(dto -> ProposalDto.builder().price(dto.getPrice()).build()).toList())
+                .client(getClient(pr.getClientId()))
                 .build()).toList();
 
         return GetFindPartnerRequestsResponse.builder()
                 .findPartnerRequests(partnerRequestDtos)
                 .build();
+    }
+
+    private ClientDto getClient(String clientId) {
+        return clientService.getById(clientId);
     }
 
     public FindPartnerRequest getById(final String findPartnerRequestId) {

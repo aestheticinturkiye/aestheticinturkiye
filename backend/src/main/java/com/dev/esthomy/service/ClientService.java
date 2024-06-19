@@ -7,7 +7,6 @@ import com.dev.esthomy.dto.request.CreateClientRequest;
 import com.dev.esthomy.dto.response.CreateClientResponse;
 import com.dev.esthomy.dto.response.GetClientResponse;
 import com.dev.esthomy.exception.BusinessException;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Client;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.ClientRepository;
@@ -50,12 +49,13 @@ public class ClientService {
         credentialService.createCredential(credentialDto);
 
         try {
-            mailService.sendEmail(request.getEmail(),request.getName(),null, EmailTemplates.WELCOME_MESSAGE);
+            mailService.sendEmail(request.getEmail(), request.getName(), null, EmailTemplates.WELCOME_MESSAGE);
         } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("Failed to send email. Error: " + e.getMessage());
         }
 
         return CreateClientResponse.builder()
+                .id(client.getId())
                 .name(client.getName())
                 .email(client.getEmail())
                 .build();
@@ -85,8 +85,8 @@ public class ClientService {
                 .build()).orElseThrow(() -> new BusinessException("Client not found"));
     }
 
-    public GetClientResponse getClient(final JwtClaims principal) {
-        final Client client = clientRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException("Client not found"));
+    public GetClientResponse getClient(final String id) {
+        final Client client = clientRepository.findById(id).orElseThrow(() -> new BusinessException("Client not found"));
         return GetClientResponse.builder()
                 .client(ClientDto.toDto(client))
                 .build();

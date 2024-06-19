@@ -23,11 +23,11 @@ public class FindPartnerRequestController {
 
     @PostMapping
     public ResponseEntity<CreateFindPartnerRequestResponse> create(@RequestPart("partnerReq") String request,
-                                                                   @AuthenticationPrincipal JwtClaims principal,@RequestPart("files") List<MultipartFile> files) {
-        CreateFindPartnerRequest createFindPartnerRequest = objectConverter.convert(request);
-        return ResponseEntity.ok().body(findPartnerRequestService.create(principal, createFindPartnerRequest,files));
+                                                                   @AuthenticationPrincipal JwtClaims principal,
+                                                                   @RequestPart("files") List<MultipartFile> files) {
+        final CreateFindPartnerRequest createFindPartnerRequest = objectConverter.convert(request);
+        return ResponseEntity.ok().body(findPartnerRequestService.create(principal, createFindPartnerRequest, files));
     }
-
 
     @GetMapping
     public ResponseEntity<GetFindPartnerRequestsResponse> get(@AuthenticationPrincipal JwtClaims principal) {
@@ -35,7 +35,7 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<GetFindPartnerRequestsResponse> getALL(@AuthenticationPrincipal JwtClaims principal) {
+    public ResponseEntity<GetFindPartnerRequestsResponse> getAll(@AuthenticationPrincipal JwtClaims principal) {
         return ResponseEntity.ok().body(findPartnerRequestService.getAll(principal));
     }
 }
