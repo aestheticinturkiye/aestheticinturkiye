@@ -86,11 +86,11 @@ public class FindPartnerRequestService {
                 .build()).toList();
 
         return GetFindPartnerRequestsResponse.builder()
-                .findPartnerRequests(partnerRequestDtos)
+                .data(partnerRequestDtos)
                 .build();
     }
 
-    private ClientDto getClient(String clientId) {
+    private ClientDto getClient(final String clientId) {
         return clientService.getById(clientId);
     }
 

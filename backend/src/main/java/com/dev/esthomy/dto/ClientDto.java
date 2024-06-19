@@ -16,7 +16,7 @@ public class ClientDto {
     private String country;
     private String gender;
 
-    public static ClientDto toDto(Client client) {
+    public static ClientDto toDto(final Client client) {
         return ClientDto.builder()
                 .id(client.getId())
                 .name(client.getName())

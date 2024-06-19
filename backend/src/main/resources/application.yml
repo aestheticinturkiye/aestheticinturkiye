@@ -1,5 +1,5 @@
 server:
-    port: 8080
+  port: 8080
 
 application:
   bucket:
@@ -22,8 +22,8 @@ spring:
       ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost:5432/esthomy_db
-      username: esthomyuser
-      password: esthomy2000*
+    username: esthomyuser
+    password: esthomy2000*
   mail:
     host: smtp.gmail.com
     port: 587
@@ -39,7 +39,7 @@ spring:
     multipart:
       enabled: true
       max-request-size: 450MB
-      max-file-size:  50MB
+      max-file-size: 50MB
 
 
 s3:

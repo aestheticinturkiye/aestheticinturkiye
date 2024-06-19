@@ -10,5 +10,5 @@ import java.util.List;
 @Data
 @Builder
 public class GetFindPartnerRequestsResponse {
-    private List<FindPartnerRequestDto> findPartnerRequests;
+    private List<FindPartnerRequestDto> data;
 }
