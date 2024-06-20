@@ -1,4 +1,4 @@
 const urls = {
-  getSignedUser: "/broker",
+  proposal: "/proposal",
 };
 export default urls;
