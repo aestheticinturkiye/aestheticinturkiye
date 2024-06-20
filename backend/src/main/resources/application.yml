@@ -8,11 +8,11 @@ jwt:
   access:
     expiration: 150m
     secret:
-      key: 646365c6f6e44c12e4a1c651ef02cebba7be3f02e7c54da4087469840b570b8d
+      key: 64636'5c6f6e44c13#2e4a1--?c651ef02ce?bba7be3f!02e7c54da4087469840b570b8d
   refresh:
     expiration: 150m
     secret:
-      key: 646365c6f6e44c12e4a1c651ef02cebba7be3f02e7c54da4087469840b570b8d
+      key: 64636'5c6f6e44c13#2e4a1--?c651ef02ce?bba7be3f!02e7c54da4087469840b570b8d
     issuer: aesthetics
 
 
