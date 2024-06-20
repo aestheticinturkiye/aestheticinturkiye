@@ -1,4 +1,5 @@
 import { refresh } from "@/services/Auth";
+import { getSignedUser } from "@/services/User";
 import useAuth from "@/store/store";
 import axios from "axios";
 
@@ -13,8 +14,11 @@ export const serviceForLogin = axios.create({
 const createSession = async () => {
   console.log("create session");
   const response = await refresh();
-  useAuth.setState({ accessToken: response.data.accessToken });
-  return response.data.accessToken;
+  const accessToken = "Bearer " + response.data.accessToken;
+  useAuth.setState({ accessToken });
+  const user = await getSignedUser();
+  useAuth.setState({ user: { ...user.broker } });
+  return accessToken;
 };
 
 let isGetActiveSessionRequest = false;
@@ -33,7 +37,7 @@ const clearQueue = () => {
 service.interceptors.response.use(null, (error) => {
   const { response = {}, config: sourceConfig } = error;
 
-  if (response.status === 400) {
+  if (response.status === 403) {
     if (!isGetActiveSessionRequest) {
       isGetActiveSessionRequest = true;
       createSession()
@@ -51,6 +55,7 @@ service.interceptors.response.use(null, (error) => {
 
     const retryRequest = new Promise((resolve) => {
       addRequestToQueue((token) => {
+        console.log("token", token);
         console.log(
           "Retry with new session context %s request to %s",
           sourceConfig.method,
@@ -69,9 +74,11 @@ service.interceptors.response.use(null, (error) => {
 
 service.interceptors.request.use(
   (config) => {
+    console.log("config", config);
     if (!config.headers["Authorization"]) {
       const accessToken = useAuth.getState().accessToken;
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      console.log("accessToken", accessToken);
+      config.headers["Authorization"] = accessToken;
     }
     return config;
   },

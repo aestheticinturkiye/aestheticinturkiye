@@ -8,6 +8,7 @@ export const login = async (values) => {
     password: values.password,
   };
   const response = await serviceForLogin.post(url + "/auth/login", data);
+  useAuth.setState({ accessToken: "Bearer " + response.data.accessToken });
   console.log("reponse", response);
   return response;
 };

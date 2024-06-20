@@ -1,11 +1,7 @@
 import service from "@/api/axios";
-import urls from "@/api/urls/User";
+import urls from "@/api/urls/user";
 
 export const getSignedUser = async () => {
-  //   const response = await service.get(urls.getSignedUser);
-  const response = {
-    name: "omer",
-    surname: "colak",
-  };
-  return response;
+  const response = await service.get(urls.getSignedUser);
+  return response.data;
 };
