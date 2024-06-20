@@ -26,12 +26,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.headers().frameOptions().disable().and().cors().and().csrf().disable()
                 .authorizeHttpRequests(
-                        x -> x.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v3/api-docs/**").permitAll()
-                                .requestMatchers("/api/swagger-ui/**").permitAll()
-                                .requestMatchers("/api/v1/client").permitAll()
-                                .requestMatchers("/api/v1/broker").permitAll()
-                                .requestMatchers("/api/v1/subscribe").permitAll()
+                        x -> x.requestMatchers("/v1/auth/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v1/client").permitAll()
+                                .requestMatchers("/v1/broker").permitAll()
+                                .requestMatchers("/v1/subscribe").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
