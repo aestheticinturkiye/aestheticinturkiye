@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Console Appender for standard output (INFO, DEBUG, WARN, etc.) -->
+        <Console name="Stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{ISO8601} [%t] %-5p %c - %m%n"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <!-- Console Appender for error output (ERROR, FATAL) -->
+        <Console name="Stderr" target="SYSTEM_ERR">
+            <PatternLayout pattern="%d{ISO8601} [%t] %-5p %c - %m%n"/>
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger Configuration -->
+        <Root level="info">
+            <AppenderRef ref="Stdout"/>
+            <AppenderRef ref="Stderr"/>
+        </Root>
+    </Loggers>
+</Configuration>

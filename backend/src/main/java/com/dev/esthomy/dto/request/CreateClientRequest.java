@@ -5,8 +5,6 @@ import com.dev.esthomy.validator.aspect.ValidateGSMNumber;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-
 @Data
 public class CreateClientRequest {
     @NotBlank

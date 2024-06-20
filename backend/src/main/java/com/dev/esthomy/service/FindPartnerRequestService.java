@@ -8,6 +8,7 @@ import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageableAdapterResponse;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.enums.MemberRole;
@@ -28,7 +29,7 @@ public class FindPartnerRequestService {
     private final FindPartnerRequestDataAdapter findPartnerRequestDataAdapter;
 
     public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request, List<MultipartFile> files) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException("You can not find partner");
+        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException(BusinessError.INVALID_ROLE);
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
@@ -53,7 +54,7 @@ public class FindPartnerRequestService {
                                               final int pageSize,
                                               final int pageNumber) {
         if (!principal.getRole().equals(MemberRole.CLIENT))
-            throw new BusinessException("You can not reach find partner requests");
+            throw new BusinessException(BusinessError.INVALID_ROLE);
 
         final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
 
@@ -71,7 +72,7 @@ public class FindPartnerRequestService {
                                                  final int pageSize,
                                                  final int pageNumber) {
         if (!principal.getRole().equals(MemberRole.BROKER))
-            throw new BusinessException("You can not reach find partner requests");
+            throw new BusinessException(BusinessError.INVALID_ROLE);
 
         final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageable = findPartnerRequestDataAdapter.getFindPartnerRequestPageable(pageSize, pageNumber);
 

@@ -5,6 +5,7 @@ import com.dev.esthomy.dto.ProposalDto;
 import com.dev.esthomy.dto.request.CreateOperationRequest;
 import com.dev.esthomy.dto.response.CreateOperationResponse;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Operation;
 import com.dev.esthomy.models.Proposal;
@@ -22,7 +23,7 @@ public class OperationService {
     private final OperationRepository operationRepository;
 
     public CreateOperationResponse create(final JwtClaims principal, final CreateOperationRequest createOperationRequest) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException("You can not create operation");
+        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException(BusinessError.INVALID_ROLE);
 
         final ProposalDto proposal = proposalService.findById(createOperationRequest.getProposalId());
 
@@ -41,7 +42,7 @@ public class OperationService {
             return operation.map(p -> OperationDto.builder()
                     .proposalId(p.getProposal().getId()).status(p.getStatus()).build());
         } else {
-            throw new BusinessException("Operation not found");
+            throw new BusinessException(BusinessError.OPERATION_NOT_FOUND);
         }
     }
 

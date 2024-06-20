@@ -37,12 +37,12 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(final BusinessException ex) {
         log.info("Business exception: " + Arrays.toString(ex.getStackTrace()));
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getBusinessError(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(final Exception ex) {
+    public ResponseEntity<Object> handleAllExceptions(final InvalidException ex) {
         log.error("Exception: " + Arrays.toString(ex.getStackTrace()));
-        return new ResponseEntity<>("An error occurred. Please try again later.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getInvalidError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

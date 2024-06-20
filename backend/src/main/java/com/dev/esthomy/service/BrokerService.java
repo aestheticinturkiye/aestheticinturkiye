@@ -6,6 +6,7 @@ import com.dev.esthomy.dto.request.CreateBrokerRequest;
 import com.dev.esthomy.dto.request.GetBrokerResponse;
 import com.dev.esthomy.dto.response.CreateBrokerResponse;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Broker;
 import com.dev.esthomy.models.enums.MemberRole;
@@ -54,7 +55,7 @@ public class BrokerService {
                     .name(b.getName())
                     .surname(b.getSurname())
                     .email(b.getEmail())
-                    .build()).orElseThrow(() -> new RuntimeException("Broker not found"));
+                    .build()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         }
 
         public BrokerDto getById ( final String id){
@@ -65,11 +66,11 @@ public class BrokerService {
                     .name(b.getName())
                     .surname(b.getSurname())
                     .email(b.getEmail())
-                    .build()).orElseThrow(() -> new RuntimeException("Broker not found"));
+                    .build()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         }
 
     public GetBrokerResponse getBroker(final JwtClaims principal) {
-        final Broker broker = brokerRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException("Broker not found"));
+        final Broker broker = brokerRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         return GetBrokerResponse.builder()
                 .broker(BrokerDto.toDto(broker))
                 .build();

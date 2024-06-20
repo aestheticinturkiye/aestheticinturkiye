@@ -194,3 +194,13 @@ Rbackend/src/main/java/com/dev/esthomy/dto/response/CreateSubscriptionResponse.j
 Lbackend/src/main/java/com/dev/esthomy/repository/SubscriptionRepository.java,6/3/6387f05460079e8720e3b77c73953fe55675c3d9
 x
 Hbackend/src/main/java/com/dev/esthomy/repository/ProposalRepository.java,6/5/65ff9daff9652bae1d781ce6b91c89b3ebb4652d
+n
+>backend/src/main/java/com/dev/esthomy/service/MailService.java,a/8/a827718d3d468ae755977aefdf6b4fd3f5f5f906
+|
+Lbackend/src/main/java/com/dev/esthomy/dto/request/CreateProposalRequest.java,f/c/fc76049e176f2833e2cacd94825a6f8ef06f184b
+x
+Hbackend/src/main/java/com/dev/esthomy/exception/error/BusinessError.java,1/1/111977acb59beab813844458753922a884e60e13
+u
+Ebackend/src/main/java/com/dev/esthomy/exception/InvalidException.java,a/9/a9ba44558d2e5ba346061ae941e84b848822831e
+w
+Gbackend/src/main/java/com/dev/esthomy/exception/error/InvalidError.java,1/c/1cbbb6e1f0a73ea6d02f1b4a6b56f206851a74ba

@@ -7,6 +7,7 @@ import com.dev.esthomy.dto.request.CreateClientRequest;
 import com.dev.esthomy.dto.response.CreateClientResponse;
 import com.dev.esthomy.dto.response.GetClientResponse;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.models.Client;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.ClientRepository;
@@ -73,7 +74,7 @@ public class ClientService {
                 .surname(b.getSurname())
                 .email(b.getEmail())
                 .age(b.getAge())
-                .build()).orElseThrow(() -> new BusinessException("Client not found"));
+                .build()).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
     }
 
     public ClientDto getById(final String id) {
@@ -85,11 +86,11 @@ public class ClientService {
                 .surname(b.getSurname())
                 .email(b.getEmail())
                 .age(b.getAge())
-                .build()).orElseThrow(() -> new BusinessException("Client not found"));
+                .build()).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
     }
 
     public GetClientResponse getClient(final String id) {
-        final Client client = clientRepository.findById(id).orElseThrow(() -> new BusinessException("Client not found"));
+        final Client client = clientRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
         return GetClientResponse.builder()
                 .client(ClientDto.toDto(client))
                 .build();
