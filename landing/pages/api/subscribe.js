@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         const { email } = req.body;
 
         try {
-            const response = await fetch("http://51.21.56.239/v1/subscribe", {
+            const response = await fetch("https://51.21.56.239/v1/subscribe", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
