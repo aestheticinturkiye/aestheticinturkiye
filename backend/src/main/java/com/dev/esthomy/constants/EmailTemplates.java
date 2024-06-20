@@ -65,4 +65,85 @@ public class EmailTemplates {
                     "  </div>\n" +
                     "</body>\n" +
                     "</html>";
+
+
+    public static final String SUB_MAIL = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+            "    <title>Thank You for Subscribing</title>\n" +
+            "    <style>\n" +
+            "        body {\n" +
+            "            font-family: Arial, sans-serif;\n" +
+            "            background-color: #e0dcd7;\n" +
+            "            margin: 0;\n" +
+            "            padding: 0;\n" +
+            "        }\n" +
+            "        .container {\n" +
+            "            max-width: 600px;\n" +
+            "            margin: 0 auto;\n" +
+            "            background-color: #ffffff;\n" +
+            "            padding: 20px;\n" +
+            "            border-radius: 8px;\n" +
+            "            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n" +
+            "            position: relative;\n" +
+            "        }\n" +
+            "        .content {\n" +
+            "            text-align: center;\n" +
+            "            padding: 20px;\n" +
+            "        }\n" +
+            "        .content h1 {\n" +
+            "            color: #333333;\n" +
+            "        }\n" +
+            "        .content p {\n" +
+            "            color: #666666;\n" +
+            "        }\n" +
+            "        .button {\n" +
+            "            text-align: center;\n" +
+            "            padding: 20px;\n" +
+            "        }\n" +
+            "        .button a {\n" +
+            "            background-color: #007BFF;\n" +
+            "            color: #ffffff;\n" +
+            "            padding: 10px 20px;\n" +
+            "            text-decoration: none;\n" +
+            "            border-radius: 5px;\n" +
+            "        }\n" +
+            "        .footer {\n" +
+            "            text-align: center;\n" +
+            "            padding: 20px;\n" +
+            "            color: #999999;\n" +
+            "            font-size: 12px;\n" +
+            "            position: relative;\n" +
+            "        }\n" +
+            "        .footer img {\n" +
+            "            position: absolute;\n" +
+            "            bottom: 10px;\n" +
+            "            right: 10px;\n" +
+            "            width: 100px;\n" +
+            "            height: auto;\n" +
+            "        }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div class=\"container\">\n" +
+            "        <div class=\"content\">\n" +
+            "            <h1>Thank You for Subscribing!</h1>\n" +
+            "            <p>Dear [Name],</p>\n" +
+            "            <p>Thank you for subscribing to Esthomy! We are thrilled to have you on board. Stay tuned for the latest updates, exclusive offers, and insights into our aesthetic services.</p>\n" +
+            "            <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>\n" +
+            "        </div>\n" +
+            "        <div class=\"button\">\n" +
+            "            <a href=\"https://www.esthomy.com\" target=\"_blank\">Visit Our Website</a>\n" +
+            "        </div>\n" +
+            "        <div class=\"footer\">\n" +
+            "            <p>&copy; 2024 Esthomy. All rights reserved.</p>\n" +
+            "            <p>Esthomy, Your Trusted Partner in Aesthetic Operations.</p>\n" +
+            "            <img src=\"backend/src/main/resources/images/esthomy.png\" alt=\"Esthomy Logo\">\n" +
+            "        </div>\n" +
+            "    </div>\n" +
+            "</body>\n" +
+            "</html>\n";
+
 }
