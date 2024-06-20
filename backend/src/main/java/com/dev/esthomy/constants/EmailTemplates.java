@@ -1,5 +1,4 @@
 package com.dev.esthomy.constants;
-
 public class EmailTemplates {
     public static final String WELCOME_MESSAGE =
             "<!DOCTYPE html>\n" +
@@ -140,10 +139,11 @@ public class EmailTemplates {
             "        <div class=\"footer\">\n" +
             "            <p>&copy; 2024 Esthomy. All rights reserved.</p>\n" +
             "            <p>Esthomy, Your Trusted Partner in Aesthetic Operations.</p>\n" +
-            "            <img src=\"backend/src/main/resources/images/esthomy.png\" alt=\"Esthomy Logo\">\n" +
+            "            <img src=\"esthomy.png\" alt=\"Esthomy Logo\">\n" +
             "        </div>\n" +
             "    </div>\n" +
             "</body>\n" +
             "</html>\n";
 
 }
+
