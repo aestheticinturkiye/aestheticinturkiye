@@ -15,7 +15,7 @@ export const HomeBanner = () => {
         setMessage("");
 
         try {
-            const res = await fetch("https://esthomy.com/8080/v1/subscribe", {
+            const res = await fetch("https://esthomy.com/api/v1/subscribe", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
