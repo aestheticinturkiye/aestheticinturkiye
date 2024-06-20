@@ -31,6 +31,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v1/client").permitAll()
                                 .requestMatchers("/v1/broker").permitAll()
+                                .requestMatchers("/v1/subscribe").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
