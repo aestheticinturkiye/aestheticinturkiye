@@ -139,7 +139,7 @@ public class EmailTemplates {
             "        <div class=\"footer\">\n" +
             "            <p>&copy; 2024 Esthomy. All rights reserved.</p>\n" +
             "            <p>Esthomy, Your Trusted Partner in Aesthetic Operations.</p>\n" +
-            "            <img src=\"esthomy.png\" alt=\"Esthomy Logo\">\n" +
+            "            <img src=\"https://demoesthy.s3.eu-north-1.amazonaws.com/esthomylogo/esthomy.png\" alt=\"Esthomy Logo\">\n" +
             "        </div>\n" +
             "    </div>\n" +
             "</body>\n" +
