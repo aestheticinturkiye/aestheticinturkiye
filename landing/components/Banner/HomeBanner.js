@@ -15,7 +15,7 @@ export const HomeBanner = () => {
         setMessage("");
 
         try {
-            const res = await fetch("/api/subscribe", {
+            const res = await fetch("http://51.21.56.239:8080/v1/subscribe", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
