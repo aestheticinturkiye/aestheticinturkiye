@@ -8,6 +8,7 @@ import com.dev.esthomy.dto.authentication.request.AuthenticateWithRefreshTokenRe
 import com.dev.esthomy.dto.authentication.request.LoginRequest;
 import com.dev.esthomy.dto.authentication.response.LoginResponse;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.jwt.builder.JwtTokenBuilder;
 import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.jwt.model.JwtTokens;
@@ -57,7 +58,7 @@ public class LoginService {
         }
 
         if (accountDto == null) {
-            throw new BusinessException("Account not found");
+            throw new BusinessException(BusinessError.ACCOUNT_NOT_FOUND);
         }
 
         final JwtTokens jwtTokens = jwtTokenBuilder.build(JwtClaims.builder()

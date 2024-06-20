@@ -3,6 +3,7 @@ package com.dev.esthomy.service;
 import com.dev.esthomy.dto.CredentialDto;
 import com.dev.esthomy.dto.authentication.request.LoginRequest;
 import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
 import com.dev.esthomy.models.Credential;
 import com.dev.esthomy.models.enums.CredentialStatus;
 import com.dev.esthomy.repository.CredentialRepository;
@@ -21,10 +22,10 @@ public class CredentialService {
                         .email(c.getEmail())
                         .password(c.getPassword())
                         .role(c.getMemberRole())
-                        .build()).orElseThrow(() -> new BusinessException("Credential Not Found."));
+                        .build()).orElseThrow(() -> new BusinessException(BusinessError.CREDENTIAL_NOT_FOUND));
 
         if (!checkPassword(credentialDto, request)) {
-            throw new BusinessException("Incorrect password.");
+            throw new BusinessException(BusinessError.INVALID_CREDENTIAL);
         }
 
         return credentialDto;
@@ -45,7 +46,7 @@ public class CredentialService {
 
     public void isExist(final String email) {
         if (credentialRepository.findCredentialByEmailAndStatus(email, CredentialStatus.ACTIVE).isPresent()) {
-            throw new BusinessException("Email already exist");
+            throw new BusinessException(BusinessError.EMAIL_ALREADY_EXIST);
         }
     }
 }

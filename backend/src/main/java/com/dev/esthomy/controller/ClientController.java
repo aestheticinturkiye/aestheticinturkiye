@@ -21,7 +21,7 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<CreateClientResponse> create(final @Valid @RequestBody CreateClientRequest request) {
-        log.info(String.valueOf(request));
+        log.info(request.toString());
         return ResponseEntity.ok().body(clientService.create(request));
     }
 
