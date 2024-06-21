@@ -34,7 +34,8 @@ public class MailService {
                     file.getName(), file);
         }
 
-        helper.setSubject("Subject: Receipt of Your Request for a Cosmetic Surgery Proposal\n\n");
+        //todo: add email subject as enum
+        helper.setSubject("Subject: Thanks for your subscription!");
         helper.setText(emailTemplateCreator(clientName,emailType) ,true);
 
         mailSender.send(message);
