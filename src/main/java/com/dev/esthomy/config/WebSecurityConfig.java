@@ -42,7 +42,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost*", "https://esthomy.com*")
+                .allowedOriginPatterns("http://localhost*", "https://esthomy.com*", "https://www.esthomy.com*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowCredentials(true);
     }
