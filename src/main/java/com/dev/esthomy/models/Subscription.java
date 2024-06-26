@@ -1,8 +1,7 @@
 package com.dev.esthomy.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.dev.esthomy.models.enums.AestheticType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +21,9 @@ public class Subscription {
     private String id;
 
     private String email;
+
+    @Column(name = "aesthetic_type")
+    @Enumerated
+    private AestheticType aestheticType;
 
 }
