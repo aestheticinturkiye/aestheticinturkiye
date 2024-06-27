@@ -38,7 +38,7 @@ spring:
 
   mail:
     host: privateemail.com
-    port: 465
+    port: 587
     username: info@esthomy.com
     password: Easyolsun123.
     properties:
