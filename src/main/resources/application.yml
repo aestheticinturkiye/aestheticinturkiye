@@ -24,17 +24,30 @@ spring:
     url: jdbc:postgresql://localhost:5432/esthomy_db
     username: esthomyuser
     password: esthomy2000*
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: mertatag0@gmail.com
+#    password: ptvw admc yqiu jgni
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: mertatag0@gmail.com
-    password: ptvw admc yqiu jgni
+    host: privateemail.com
+    port: 465
+    username: info@esthomy.com
+    password: Easyolsun123.
     properties:
       mail:
         smtp:
           auth: true
-          starttls:
+          ssl:
             enable: true
+
   servlet:
     multipart:
       enabled: true
