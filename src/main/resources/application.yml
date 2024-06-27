@@ -37,8 +37,8 @@ spring:
 #            enable: true
 
   mail:
-    host: privateemail.com
-    port: 587
+    host: mail.privateemail.com
+    port: 465
     username: info@esthomy.com
     password: Easyolsun123.
     properties:
