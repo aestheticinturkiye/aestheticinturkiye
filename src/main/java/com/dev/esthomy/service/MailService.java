@@ -26,7 +26,7 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
 
-        helper.setFrom("esthomy@noreply.com","Esthomy");
+        helper.setFrom("info@esthomy.com","Esthomy");
         helper.setTo(email);
 
         if(file != null){
