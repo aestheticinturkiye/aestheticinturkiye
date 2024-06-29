@@ -58,14 +58,20 @@ public class ProposalService {
         }
 
         try {
-            String chatResponse = chatService.createChat(brokerDto.getId().toString(), clientDto.getId().toString(), proposal.getId().toString());
-            log.info("Chat created successfully: " + chatResponse);
+            String chatId = chatService.createChat(brokerDto.getId().toString(), clientDto.getId().toString(), proposal.getId().toString());
+            log.info("Chat created successfully: " + chatId);
+            return CreateProposalResponse.builder()
+                    .id(proposal.getId())
+                    .chatId(chatId)
+                    .build();
         } catch (Exception e) {
             log.error("Failed to create chat. Error: " + e.getMessage());
         }
 
         return CreateProposalResponse.builder()
-                .id(proposal.getId()).build();
+                .id(proposal.getId())
+                .chatId(null)
+                .build();
     }
 
 

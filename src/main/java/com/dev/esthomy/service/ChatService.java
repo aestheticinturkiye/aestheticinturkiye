@@ -1,4 +1,7 @@
 package com.dev.esthomy.service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,7 +22,6 @@ public class ChatService {
     private String chatServiceUrl;
 
     public String createChat(String brokerId, String clientId, String proposalId) {
-
         String jsonInputString = String.format("{\"brokerId\": \"%s\", \"clientId\": \"%s\", \"proposalId\": \"%s\"}", brokerId, clientId, proposalId);
 
         HttpHeaders headers = new HttpHeaders();
@@ -29,6 +31,16 @@ public class ChatService {
 
         ResponseEntity<String> response = restTemplate.exchange(chatServiceUrl, HttpMethod.POST, request, String.class);
 
-        return response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            System.out.println("Response Body: " + response.getBody());
+            JsonNode rootNode = objectMapper.readTree(response.getBody());
+            String chatId = rootNode.path("_id").asText();
+            return chatId;
+        } catch (Exception e) {
+            System.err.println("Failed to parse response body: " + response.getBody());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse chat response", e);
+        }
     }
 }

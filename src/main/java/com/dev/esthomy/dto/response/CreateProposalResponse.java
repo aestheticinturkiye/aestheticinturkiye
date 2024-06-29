@@ -7,4 +7,5 @@ import lombok.Data;
 @Builder
 public class CreateProposalResponse {
     private String id;
+    private String chatId;
 }
