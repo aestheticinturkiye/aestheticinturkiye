@@ -32,6 +32,7 @@ public class ProposalService {
     private final ClientService clientService;
     private final FindPartnerRequestService findPartnerRequestService;
     private final MailService mailService;
+    private final ChatService chatService;
     public CreateProposalResponse create(final JwtClaims principal, final CreateProposalRequest createProposal) {
         if (MemberRole.CLIENT.equals(principal.getRole())) throw new RuntimeException("You can not send proposal");
 
@@ -56,9 +57,17 @@ public class ProposalService {
             log.error("Failed to send email. Error: " + e.getMessage());
         }
 
+        try {
+            String chatResponse = chatService.createChat(brokerDto.getId().toString(), clientDto.getId().toString(), proposal.getId().toString());
+            log.info("Chat created successfully: " + chatResponse);
+        } catch (Exception e) {
+            log.error("Failed to create chat. Error: " + e.getMessage());
+        }
+
         return CreateProposalResponse.builder()
                 .id(proposal.getId()).build();
     }
+
 
     public GetProposalResponse get(final JwtClaims principal, final String id) {
         final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no record for this Proposal id"));
@@ -128,7 +137,7 @@ public class ProposalService {
             return proposal.map(p -> ProposalDto.builder().price(p.getPrice()).build()).orElse(null);
         }
         throw new RuntimeException("There is no record for this Proposal id");
-
     }
+
 }
 
