@@ -1,7 +1,12 @@
 package com.dev.esthomy.service;
 
+import com.dev.esthomy.dto.ChatDto;
+import com.dev.esthomy.jwt.model.JwtClaims;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
+@Slf4j
 public class ChatService {
 
     @Autowired
@@ -42,5 +50,24 @@ public class ChatService {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse chat response", e);
         }
+    }
+
+    public List<ChatDto> getAllChat(JwtClaims principal) throws JsonProcessingException {
+        String userId = principal.getId();
+        String url = "http://localhost:4000/api/chat?userId=" + userId;
+
+        HttpHeaders headers = new HttpHeaders();
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        // Yanıtı String olarak al
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ChatDto> chats = objectMapper.readValue(response.getBody(), new TypeReference<List<ChatDto>>(){});
+
+        log.info(chats.toString());
+        System.out.println(chats);
+        return chats;
     }
 }
