@@ -30,10 +30,10 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping
-    public ResponseEntity<GetFindPartnerRequestsPageable> get(@AuthenticationPrincipal JwtClaims principal,
+    public ResponseEntity<GetFindPartnerRequestsPageable> get(@RequestHeader("id") final String id,
                                                               @RequestParam(value = "size", defaultValue = "20") final int pageSize,
                                                               @RequestParam(value = "page", defaultValue = "0") final int pageNumber) {
-        return ResponseEntity.ok().body(findPartnerRequestService.get(principal, pageSize, pageNumber));
+        return ResponseEntity.ok().body(findPartnerRequestService.get(id, pageSize, pageNumber));
     }
 
     @GetMapping("/all")

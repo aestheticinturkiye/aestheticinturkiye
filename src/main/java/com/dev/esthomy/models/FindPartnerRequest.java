@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class FindPartnerRequest {
     private Date preferedDate;
     private String preferredCity;
 
-    @OneToMany(mappedBy = "findPartnerRequest" , cascade = CascadeType.ALL)
-    private List<Proposal> proposals = new ArrayList<>();
+    @OneToMany(mappedBy = "findPartnerRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Proposal> proposals;
     private boolean isNeededAccommodation;
     private boolean isNeededTransportation;
     private String description;

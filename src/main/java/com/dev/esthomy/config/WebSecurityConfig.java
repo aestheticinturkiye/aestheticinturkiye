@@ -1,6 +1,5 @@
 package com.dev.esthomy.config;
 
-import com.dev.esthomy.filter.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,26 +14,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig implements WebMvcConfigurer {
-    private final JwtTokenFilter jwtTokenFilter;
+    // private final JwtTokenFilter jwtTokenFilter;
 
-    public WebSecurityConfig(final JwtTokenFilter jwtTokenFilter) {
-        this.jwtTokenFilter = jwtTokenFilter;
-    }
+//    public WebSecurityConfig(final JwtTokenFilter jwtTokenFilter) {
+//        this.jwtTokenFilter = jwtTokenFilter;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.headers().frameOptions().disable().and().cors().and().csrf().disable()
-                .authorizeHttpRequests(
-                        x -> x.requestMatchers("/v1/auth/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/v1/client").permitAll()
-                                .requestMatchers("/v1/broker").permitAll()
-                                .requestMatchers("/v1/subscribe/**").permitAll()
-                                .anyRequest().authenticated()
-                )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

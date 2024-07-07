@@ -50,13 +50,10 @@ public class FindPartnerRequestService {
                 .build();
     }
 
-    public GetFindPartnerRequestsPageable get(final JwtClaims principal,
+    public GetFindPartnerRequestsPageable get(final String id,
                                               final int pageSize,
                                               final int pageNumber) {
-        if (!principal.getRole().equals(MemberRole.CLIENT))
-            throw new BusinessException(BusinessError.INVALID_ROLE);
-
-        final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
+        final ClientDto clientDto = clientService.getById(id);
 
         final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageableAdapterResponse = findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(clientDto.getId(), pageSize, pageNumber);
 
