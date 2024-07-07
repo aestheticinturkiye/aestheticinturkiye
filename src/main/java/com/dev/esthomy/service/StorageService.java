@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.util.UrlBuilder;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +31,8 @@ public class StorageService {
     private final AmazonS3 s3Client;
     private final UrlBuilder urlBuilder;
 
-    public String uploadFiles(final JwtClaims principal,final List<MultipartFile> files, final String partnerReqId) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new RuntimeException("You can not find partner");
+    public String uploadFiles(final MemberRole role, final List<MultipartFile> files, final String partnerReqId) {
+        if (!role.equals(MemberRole.CLIENT)) throw new RuntimeException("You can not find partner");
         StringBuilder result = new StringBuilder();
         for (MultipartFile file : files) {
             File fileObj = convertMultiPartFileToFile(file);

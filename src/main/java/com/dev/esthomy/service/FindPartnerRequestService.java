@@ -9,7 +9,6 @@ import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageableAdapterResponse;
 import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.exception.error.BusinessError;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.FindPartnerRequestDataAdapter;
@@ -28,10 +27,12 @@ public class FindPartnerRequestService {
     private final StorageService storageService;
     private final FindPartnerRequestDataAdapter findPartnerRequestDataAdapter;
 
-    public CreateFindPartnerRequestResponse create(final JwtClaims principal, final CreateFindPartnerRequest request, List<MultipartFile> files) {
-        if (!principal.getRole().equals(MemberRole.CLIENT)) throw new BusinessException(BusinessError.INVALID_ROLE);
+    public CreateFindPartnerRequestResponse create(final String id,
+                                                   final MemberRole role,
+                                                   final CreateFindPartnerRequest request, List<MultipartFile> files) {
+        if (role.equals(MemberRole.CLIENT)) throw new BusinessException(BusinessError.INVALID_ROLE);
 
-        final ClientDto clientDto = clientService.getByEmail(principal.getEmail());
+        final ClientDto clientDto = clientService.getById(id);
 
         final FindPartnerRequest findPartnerRequest = findPartnerRequestRepository.save(FindPartnerRequest.builder()
                 .aestheticType(request.getAestheticType())
@@ -43,7 +44,7 @@ public class FindPartnerRequestService {
                 .isNeededTransportation(request.isNeededTransportation())
                 .build());
 
-        storageService.uploadFiles(principal, files, findPartnerRequest.getId());
+        storageService.uploadFiles(role, files, findPartnerRequest.getId());
 
         return CreateFindPartnerRequestResponse.builder()
                 .id(findPartnerRequest.getId())
@@ -65,10 +66,10 @@ public class FindPartnerRequestService {
     }
 
 
-    public GetFindPartnerRequestsPageable getAll(final JwtClaims principal,
+    public GetFindPartnerRequestsPageable getAll(final MemberRole role,
                                                  final int pageSize,
                                                  final int pageNumber) {
-        if (!principal.getRole().equals(MemberRole.BROKER))
+        if (role.equals(MemberRole.BROKER))
             throw new BusinessException(BusinessError.INVALID_ROLE);
 
         final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageable = findPartnerRequestDataAdapter.getFindPartnerRequestPageable(pageSize, pageNumber);
@@ -106,4 +107,8 @@ public class FindPartnerRequestService {
         return findPartnerRequestRepository.getById(findPartnerRequestId);
     }
 
+    public FindPartnerRequest getFindPartnerRequest(String id) {
+        return findPartnerRequestRepository.findById(id).get();
+
+    }
 }

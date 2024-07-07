@@ -60,12 +60,12 @@ public class ProposalService {
                 .id(proposal.getId()).build();
     }
 
-    public GetProposalResponse get(final JwtClaims principal, final String id) {
+    public GetProposalResponse get(final MemberRole role,
+                                   final String memberId,
+                                   final String id) {
         final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no record for this Proposal id"));
-        final MemberRole role = principal.getRole();
-
         if (MemberRole.BROKER.equals(role)) {
-            final BrokerDto broker = brokerService.getByEmail(principal.getEmail());
+            final BrokerDto broker = brokerService.getById(memberId);
             if (broker.getId().equals(proposal.getBrokerId())) {
                 return GetProposalResponse.builder()
                         .proposal(ProposalDto.toDto(proposal))
@@ -75,7 +75,7 @@ public class ProposalService {
         }
 
         if (MemberRole.CLIENT.equals(role)) {
-            final ClientDto client = clientService.getByEmail(principal.getEmail());
+            final ClientDto client = clientService.getById(memberId);
             if (client.getId().equals(proposal.getClientId())) {
                 return GetProposalResponse.builder()
                         .proposal(ProposalDto.toDto(proposal))
@@ -87,17 +87,16 @@ public class ProposalService {
         throw new RuntimeException("You can not see this proposal");
     }
 
-    public GetAllProposalsResponse getAll(final JwtClaims principal) {
-        final MemberRole role = principal.getRole();
+    public GetAllProposalsResponse getAll(final String memberId, final MemberRole role) {
         log.info("role: {}", role.getValue());
 
         switch (role) {
             case CLIENT:
-                final ClientDto client = clientService.getByEmail(principal.getEmail());
+                final ClientDto client = clientService.getById(memberId);
                 final List<Proposal> proposals = proposalRepository.getByClientId(client.getId());
                 return getProposalResponse(proposals);
             case BROKER:
-                final BrokerDto broker = brokerService.getByEmail(principal.getEmail());
+                final BrokerDto broker = brokerService.getById(memberId);
                 final List<Proposal> brokerProposals = proposalRepository.getByBrokerId(broker.getId());
                 return getProposalResponse(brokerProposals);
             default:

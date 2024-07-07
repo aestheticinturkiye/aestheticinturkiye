@@ -3,13 +3,11 @@ package com.dev.esthomy.controller;
 import com.dev.esthomy.dto.request.CreateClientRequest;
 import com.dev.esthomy.dto.response.CreateClientResponse;
 import com.dev.esthomy.dto.response.GetClientResponse;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +24,7 @@ public class ClientController {
     }
 
     @GetMapping()
-    public ResponseEntity<GetClientResponse> getClient(@AuthenticationPrincipal final JwtClaims principal) {
-        return ResponseEntity.ok().body(clientService.getClient(principal.getId()));
+    public ResponseEntity<GetClientResponse> getClient(@RequestHeader("id") final String id) {
+        return ResponseEntity.ok().body(clientService.getClient(id));
     }
 }
