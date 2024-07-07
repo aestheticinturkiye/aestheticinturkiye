@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, String>, JpaSpecificationExecutor<FindPartnerRequest> {
 
-
     @EntityGraph(value = "FindPartnerRequest.proposals", type = EntityGraph.EntityGraphType.LOAD)
     List<FindPartnerRequest> getByClientId(final String clientId);
 
