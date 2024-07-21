@@ -92,7 +92,11 @@ public class ClientService {
     public GetClientResponse getClient(final String id) {
         final Client client = clientRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
         return GetClientResponse.builder()
-                .client(ClientDto.toDto(client))
+                .client(ClientDto.toDtoWithFindPartnerRequest(client))
                 .build();
+    }
+
+    public Client findById(final String id) {
+        return clientRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.CLIENT_NOT_FOUND));
     }
 }

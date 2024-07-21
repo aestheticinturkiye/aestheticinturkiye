@@ -21,7 +21,38 @@ public class FindPartnerRequestDto {
     private List<String> imageUrls;
     private ClientDto client;
 
-    public static FindPartnerRequestDto toDto(FindPartnerRequest findPartnerRequest) {
+    public static FindPartnerRequestDto toDtoWithClient(final FindPartnerRequest findPartnerRequest) {
+        return FindPartnerRequestDto.builder()
+                .id(findPartnerRequest.getId())
+                .aestheticType(findPartnerRequest.getAestheticType())
+                .preferedDate(findPartnerRequest.getPreferedDate())
+                .preferredCity(findPartnerRequest.getPreferredCity())
+                .isNeededAccommodation(findPartnerRequest.isNeededAccommodation())
+                .isNeededTransportation(findPartnerRequest.isNeededTransportation())
+                .description(findPartnerRequest.getDescription())
+                .proposalDtoList(findPartnerRequest.getProposals().stream()
+                        .map(ProposalDto::toDto)
+                        .toList())
+                .client(ClientDto.toDto(findPartnerRequest.getClient()))
+                .build();
+    }
+
+    public static FindPartnerRequestDto toDto(final FindPartnerRequest findPartnerRequest) {
+        return FindPartnerRequestDto.builder()
+                .id(findPartnerRequest.getId())
+                .aestheticType(findPartnerRequest.getAestheticType())
+                .preferedDate(findPartnerRequest.getPreferedDate())
+                .preferredCity(findPartnerRequest.getPreferredCity())
+                .isNeededAccommodation(findPartnerRequest.isNeededAccommodation())
+                .isNeededTransportation(findPartnerRequest.isNeededTransportation())
+                .description(findPartnerRequest.getDescription())
+                .proposalDtoList(findPartnerRequest.getProposals().stream()
+                        .map(ProposalDto::toDto)
+                        .toList())
+                .build();
+    }
+
+    public static FindPartnerRequestDto toDtoWithoutProposal(final FindPartnerRequest findPartnerRequest) {
         return FindPartnerRequestDto.builder()
                 .id(findPartnerRequest.getId())
                 .aestheticType(findPartnerRequest.getAestheticType())

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -17,12 +16,15 @@ import org.hibernate.annotations.GenericGenerator;
 public class Credential {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
+
     private String email;
+
     private String password;
+
     @Enumerated
     private MemberRole memberRole;
+
     @Enumerated(EnumType.STRING)
     private CredentialStatus status;
 }

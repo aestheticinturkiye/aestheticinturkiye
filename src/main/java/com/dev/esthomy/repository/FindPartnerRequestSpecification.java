@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class FindPartnerRequestSpecification {
 
     public Specification<FindPartnerRequest> getClientFindPartnerRequestSpecification(final String clientId) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("clientId"), clientId);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("client").get("id"), clientId);
     }
 }

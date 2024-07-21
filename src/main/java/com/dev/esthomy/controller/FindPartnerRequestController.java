@@ -1,9 +1,9 @@
 package com.dev.esthomy.controller;
 
+import com.dev.esthomy.dto.FindPartnerRequestDto;
 import com.dev.esthomy.dto.request.CreateFindPartnerRequest;
 import com.dev.esthomy.dto.response.CreateFindPartnerRequestResponse;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
-import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.service.FindPartnerRequestService;
 import com.dev.esthomy.util.ObjectConverter;
@@ -45,7 +45,7 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FindPartnerRequest> getFindPartnerRequest(@PathVariable("id") final String id) {
+    public ResponseEntity<FindPartnerRequestDto> getFindPartnerRequest(@PathVariable("id") final String id) {
         return ResponseEntity.ok().body(findPartnerRequestService.getFindPartnerRequest(id));
     }
 }

@@ -15,6 +15,7 @@ public class BusinessError {
     public static final BusinessError ACCOUNT_NOT_FOUND = new BusinessError("ACCOUNT_NOT_FOUND", "Account Not Found", "Account Not Found");
     public static final BusinessError OPERATION_NOT_FOUND = new BusinessError("OPERATION_NOT_FOUND", "Operation Not Found", "Operation Not Found");
     public static final BusinessError SUBSCRIPTION_NOT_FOUND = new BusinessError("SUBSCRIPTION_NOT_FOUND", "Subscription Not Found", "Subscription Not Found");
+    public static final BusinessError PROPOSAL_NOT_FOUND = new BusinessError("PROPOSAL_NOT_FOUND", "Proposal Not Found", "Proposal Not Found");
 
     private String code;
     private String message;

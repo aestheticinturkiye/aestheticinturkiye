@@ -3,13 +3,11 @@ package com.dev.esthomy.controller;
 import com.dev.esthomy.dto.request.CreateBrokerRequest;
 import com.dev.esthomy.dto.request.GetBrokerResponse;
 import com.dev.esthomy.dto.response.CreateBrokerResponse;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.service.BrokerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,8 +23,8 @@ public class BrokerController {
         return ResponseEntity.ok().body(brokerService.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<GetBrokerResponse> getBroker(@AuthenticationPrincipal final JwtClaims principal) {
-        return ResponseEntity.ok().body(brokerService.getBroker(principal));
+    @GetMapping({"{id}"})
+    public ResponseEntity<GetBrokerResponse> getBroker(@PathVariable("id") final String id) {
+        return ResponseEntity.ok().body(brokerService.getBroker(id));
     }
 }

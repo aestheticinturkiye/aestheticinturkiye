@@ -9,6 +9,7 @@ import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageable;
 import com.dev.esthomy.dto.response.GetFindPartnerRequestsPageableAdapterResponse;
 import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.exception.error.BusinessError;
+import com.dev.esthomy.models.Client;
 import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.FindPartnerRequestDataAdapter;
@@ -30,13 +31,13 @@ public class FindPartnerRequestService {
     public CreateFindPartnerRequestResponse create(final String id,
                                                    final MemberRole role,
                                                    final CreateFindPartnerRequest request, List<MultipartFile> files) {
-        if (role.equals(MemberRole.CLIENT)) throw new BusinessException(BusinessError.INVALID_ROLE);
+        if (role.equals(MemberRole.BROKER)) throw new BusinessException(BusinessError.INVALID_ROLE);
 
-        final ClientDto clientDto = clientService.getById(id);
+        final Client client = clientService.findById(id);
 
         final FindPartnerRequest findPartnerRequest = findPartnerRequestRepository.save(FindPartnerRequest.builder()
                 .aestheticType(request.getAestheticType())
-                .clientId(clientDto.getId())
+                .client(client)
                 .description(request.getDescription())
                 .preferredCity(request.getPreferredCity())
                 .preferedDate(request.getPreferedDate())
@@ -54,9 +55,7 @@ public class FindPartnerRequestService {
     public GetFindPartnerRequestsPageable get(final String id,
                                               final int pageSize,
                                               final int pageNumber) {
-        final ClientDto clientDto = clientService.getById(id);
-
-        final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageableAdapterResponse = findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(clientDto.getId(), pageSize, pageNumber);
+        final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageableAdapterResponse = findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(id, pageSize, pageNumber);
 
         return GetFindPartnerRequestsPageable.builder()
                 .list(findPartnerRequestList(getFindPartnerRequestsPageableAdapterResponse.getList()))
@@ -94,7 +93,7 @@ public class FindPartnerRequestService {
                 .imageUrls(storageService.getImagesUrls(pr.getId()))
                 .proposalDtoList(pr.getProposals().stream()
                         .map(dto -> ProposalDto.builder().price(dto.getPrice()).build()).toList())
-                .client(getClient(pr.getClientId()))
+                .client(ClientDto.toDto(pr.getClient()))
                 .build()).toList();
 
     }
@@ -107,8 +106,9 @@ public class FindPartnerRequestService {
         return findPartnerRequestRepository.getById(findPartnerRequestId);
     }
 
-    public FindPartnerRequest getFindPartnerRequest(String id) {
-        return findPartnerRequestRepository.findById(id).get();
-
+    public FindPartnerRequestDto getFindPartnerRequest(String id) {
+        return findPartnerRequestRepository.findById(id)
+                .map(FindPartnerRequestDto::toDto)
+                .orElseThrow(() -> new BusinessException(BusinessError.INVALID_ROLE));
     }
 }

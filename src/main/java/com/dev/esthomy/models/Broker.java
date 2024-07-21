@@ -1,13 +1,12 @@
 package com.dev.esthomy.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -17,7 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 public class Broker {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String name;
@@ -30,4 +28,7 @@ public class Broker {
     private String country;
     private Boolean isActive;
     private String phone;
+
+    @OneToMany(mappedBy = "broker", fetch = FetchType.LAZY)
+    private List<Proposal> proposals;
 }

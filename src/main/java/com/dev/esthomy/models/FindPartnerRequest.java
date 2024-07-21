@@ -5,14 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@NamedEntityGraph(name = "FindPartnerRequest.proposals",
-attributeNodes = @NamedAttributeNode("proposals"))
+@NamedEntityGraph(name = "findPartnerRequest.all", attributeNodes = {@NamedAttributeNode("client"), @NamedAttributeNode("proposals")})
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,15 +18,19 @@ attributeNodes = @NamedAttributeNode("proposals"))
 public class FindPartnerRequest {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name ="UUID",strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
-    private String clientId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;
 
-    @OneToMany(mappedBy = "findPartnerRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "findPartnerRequest", fetch = FetchType.LAZY)
     private List<Proposal> proposals;
+
     private boolean isNeededAccommodation;
     private boolean isNeededTransportation;
     private String description;

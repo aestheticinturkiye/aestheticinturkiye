@@ -19,6 +19,8 @@ public class ProposalDto {
     private String transportation;
     private String hospital;
     private String description;
+    private FindPartnerRequestDto findPartnerRequest;
+    private BrokerDto broker;
 
     public static ProposalDto toDto(final Proposal proposal) {
         return ProposalDto.builder()
@@ -30,6 +32,8 @@ public class ProposalDto {
                 .transportation(proposal.getTransportation())
                 .hospital(proposal.getHospital())
                 .description(proposal.getDescription())
+                .findPartnerRequest(FindPartnerRequestDto.toDtoWithoutProposal(proposal.getFindPartnerRequest()))
+                .broker(BrokerDto.toDto(proposal.getBroker()))
                 .build();
     }
 }

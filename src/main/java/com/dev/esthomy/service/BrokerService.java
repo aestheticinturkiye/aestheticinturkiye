@@ -7,7 +7,6 @@ import com.dev.esthomy.dto.request.GetBrokerResponse;
 import com.dev.esthomy.dto.response.CreateBrokerResponse;
 import com.dev.esthomy.exception.BusinessException;
 import com.dev.esthomy.exception.error.BusinessError;
-import com.dev.esthomy.jwt.model.JwtClaims;
 import com.dev.esthomy.models.Broker;
 import com.dev.esthomy.models.enums.MemberRole;
 import com.dev.esthomy.repository.BrokerRepository;
@@ -69,10 +68,14 @@ public class BrokerService {
                     .build()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         }
 
-    public GetBrokerResponse getBroker(final JwtClaims principal) {
-        final Broker broker = brokerRepository.findById(principal.getId()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
+    public GetBrokerResponse getBroker(final String id) {
+        final Broker broker = brokerRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         return GetBrokerResponse.builder()
                 .broker(BrokerDto.toDto(broker))
                 .build();
+    }
+
+    public Broker findById(final String id) {
+        return brokerRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
     }
 }

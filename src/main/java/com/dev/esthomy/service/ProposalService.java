@@ -9,7 +9,9 @@ import com.dev.esthomy.dto.request.CreateProposalRequest;
 import com.dev.esthomy.dto.response.CreateProposalResponse;
 import com.dev.esthomy.dto.response.GetAllProposalsResponse;
 import com.dev.esthomy.dto.response.GetProposalResponse;
-import com.dev.esthomy.jwt.model.JwtClaims;
+import com.dev.esthomy.exception.BusinessException;
+import com.dev.esthomy.exception.error.BusinessError;
+import com.dev.esthomy.models.Broker;
 import com.dev.esthomy.models.FindPartnerRequest;
 import com.dev.esthomy.models.Proposal;
 import com.dev.esthomy.models.enums.MemberRole;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,26 +33,30 @@ public class ProposalService {
     private final ClientService clientService;
     private final FindPartnerRequestService findPartnerRequestService;
     private final MailService mailService;
-    public CreateProposalResponse create(final JwtClaims principal, final CreateProposalRequest createProposal) {
-        if (MemberRole.CLIENT.equals(principal.getRole())) throw new RuntimeException("You can not send proposal");
 
-        final BrokerDto brokerDto = brokerService.getByEmail(principal.getEmail());
-        final FindPartnerRequest findPartnerRequest = findPartnerRequestService.getById(createProposal.getFindPartnerRequestId());
-        final ClientDto clientDto = clientService.getById(findPartnerRequest.getClientId());
+    public CreateProposalResponse create(final CreateProposalRequest createProposalRequest,
+                                         final String memberId,
+                                         final MemberRole role) {
+        if (MemberRole.CLIENT.equals(role)) throw new BusinessException(BusinessError.INVALID_ROLE);
+
+        final Broker broker = brokerService.findById(memberId);
+        final FindPartnerRequest findPartnerRequest = findPartnerRequestService.getById(createProposalRequest.getFindPartnerRequestId());
+        final ClientDto clientDto = ClientDto.toDto(findPartnerRequest.getClient());
         final Proposal proposal = proposalRepository.save(
                 Proposal.builder()
                         .findPartnerRequest(findPartnerRequest)
-                        .brokerId(brokerDto.getId())
-                        .description(createProposal.getDescription())
-                        .accommodation(createProposal.getAccommodation())
-                        .city(createProposal.getCity())
-                        .transportation(createProposal.getCity())
-                        .operationDate(createProposal.getOperationDate())
-                        .price(createProposal.getPrice())
+                        .broker(broker)
+                        .description(createProposalRequest.getDescription())
+                        .accommodation(createProposalRequest.getAccommodation())
+                        .city(createProposalRequest.getCity())
+                        .transportation(createProposalRequest.getCity())
+                        .operationDate(createProposalRequest.getOperationDate())
+                        .price(createProposalRequest.getPrice())
+                        .clientId(clientDto.getId())
                         .build());
 
         try {
-            mailService.sendEmail(clientDto.getEmail(),clientDto.getName(),null, EmailTemplates.RECEIPT_MESSAGE);
+            mailService.sendEmail(clientDto.getEmail(), clientDto.getName(), null, EmailTemplates.RECEIPT_MESSAGE);
         } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("Failed to send email. Error: " + e.getMessage());
         }
@@ -60,31 +65,11 @@ public class ProposalService {
                 .id(proposal.getId()).build();
     }
 
-    public GetProposalResponse get(final MemberRole role,
-                                   final String memberId,
-                                   final String id) {
-        final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no record for this Proposal id"));
-        if (MemberRole.BROKER.equals(role)) {
-            final BrokerDto broker = brokerService.getById(memberId);
-            if (broker.getId().equals(proposal.getBrokerId())) {
-                return GetProposalResponse.builder()
-                        .proposal(ProposalDto.toDto(proposal))
-                        .build();
-            }
-            log.error("broker ids not matched. brokerId: {}, proposalBrokerId: {}", broker.getId(), proposal.getBrokerId());
-        }
-
-        if (MemberRole.CLIENT.equals(role)) {
-            final ClientDto client = clientService.getById(memberId);
-            if (client.getId().equals(proposal.getClientId())) {
-                return GetProposalResponse.builder()
-                        .proposal(ProposalDto.toDto(proposal))
-                        .build();
-            }
-            log.error("broker ids not matched. brokerId: {}, proposalClientId: {}", client.getId(), proposal.getBrokerId());
-        }
-
-        throw new RuntimeException("You can not see this proposal");
+    public GetProposalResponse get(final String id) {
+        final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.PROPOSAL_NOT_FOUND));
+        return GetProposalResponse.builder()
+                .proposal(ProposalDto.toDto(proposal))
+                .build();
     }
 
     public GetAllProposalsResponse getAll(final String memberId, final MemberRole role) {
@@ -119,15 +104,8 @@ public class ProposalService {
                 .proposals(proposalDtos).build();
     }
 
-    public ProposalDto findById(final String id) {
-
-        Optional<Proposal> proposal = proposalRepository.findById(id);
-
-        if (proposal.isPresent()) {
-            return proposal.map(p -> ProposalDto.builder().price(p.getPrice()).build()).orElse(null);
-        }
-        throw new RuntimeException("There is no record for this Proposal id");
-
+    public Proposal findById(final String id) {
+        return proposalRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.PROPOSAL_NOT_FOUND));
     }
 }
 

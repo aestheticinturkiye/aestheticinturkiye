@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final LoginService loginService;
+
     @PostMapping("login")
     public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest loginRequest){
         return loginService.login(loginRequest);

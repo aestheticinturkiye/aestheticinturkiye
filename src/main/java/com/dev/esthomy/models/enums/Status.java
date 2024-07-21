@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum Status {
     CANCELLED(2),
     ACCEPTED(1),
+    DONE(3),
     IN_PROGRESS(0);
 
     private final int value;
