@@ -14,8 +14,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '20'
+          distribution: "temurin"
+          java-version: "21"
 
       - name: Build Backend Project
         run: mvn clean install -DskipTests
@@ -40,7 +40,7 @@ jobs:
         run: sudo docker pull mertatag123/clientv1:latest
 
       - name: Stop and Remove Old Backend Container
-        run: sudo docker rm -f backend || true  # Remove old container if exists
+        run: sudo docker rm -f backend || true # Remove old container if exists
 
       - name: Remove Old Backend Image
         run: |
