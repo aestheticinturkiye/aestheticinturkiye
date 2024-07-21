@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ProposalService {
     private final MailService mailService;
 
     public CreateProposalResponse create(final CreateProposalRequest createProposalRequest,
-                                         final String memberId,
+                                         final UUID memberId,
                                          final MemberRole role) {
         if (MemberRole.CLIENT.equals(role)) throw new BusinessException(BusinessError.INVALID_ROLE);
 
@@ -65,14 +66,14 @@ public class ProposalService {
                 .id(proposal.getId()).build();
     }
 
-    public GetProposalResponse get(final String id) {
+    public GetProposalResponse get(final UUID id) {
         final Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.PROPOSAL_NOT_FOUND));
         return GetProposalResponse.builder()
                 .proposal(ProposalDto.toDto(proposal))
                 .build();
     }
 
-    public GetAllProposalsResponse getAll(final String memberId, final MemberRole role) {
+    public GetAllProposalsResponse getAll(final UUID memberId, final MemberRole role) {
         log.info("role: {}", role.getValue());
 
         switch (role) {
@@ -104,7 +105,7 @@ public class ProposalService {
                 .proposals(proposalDtos).build();
     }
 
-    public Proposal findById(final String id) {
+    public Proposal findById(final UUID id) {
         return proposalRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.PROPOSAL_NOT_FOUND));
     }
 }

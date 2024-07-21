@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1")
@@ -19,7 +20,7 @@ public class StorageController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFiles(@RequestHeader("member-role") final MemberRole role,
                                               @RequestParam("files") List<MultipartFile> files,
-                                              @RequestParam("partnerReqId") String partnerReqId) {
+                                              @RequestParam("partnerReqId") UUID partnerReqId) {
         return ResponseEntity.ok().body(service.uploadFiles(role, files, partnerReqId));
     }
 

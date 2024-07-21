@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +58,7 @@ public class BrokerService {
                     .build()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         }
 
-        public BrokerDto getById ( final String id){
+    public BrokerDto getById(final UUID id) {
             final Optional<Broker> optionalBroker = brokerRepository.findById(id);
             return optionalBroker.map(b -> BrokerDto.builder()
                     .id(b.getId())
@@ -68,14 +69,14 @@ public class BrokerService {
                     .build()).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         }
 
-    public GetBrokerResponse getBroker(final String id) {
+    public GetBrokerResponse getBroker(final UUID id) {
         final Broker broker = brokerRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
         return GetBrokerResponse.builder()
                 .broker(BrokerDto.toDto(broker))
                 .build();
     }
 
-    public Broker findById(final String id) {
+    public Broker findById(final UUID id) {
         return brokerRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.BROKER_NOT_FOUND));
     }
 }

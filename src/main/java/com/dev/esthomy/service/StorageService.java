@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class StorageService {
     private final AmazonS3 s3Client;
     private final UrlBuilder urlBuilder;
 
-    public String uploadFiles(final MemberRole role, final List<MultipartFile> files, final String partnerReqId) {
+    public String uploadFiles(final MemberRole role, final List<MultipartFile> files, final UUID partnerReqId) {
         if (!role.equals(MemberRole.CLIENT)) throw new RuntimeException("You can not find partner");
         StringBuilder result = new StringBuilder();
         for (MultipartFile file : files) {
@@ -56,8 +57,8 @@ public class StorageService {
         return null;
     }
 
-    public List<String> getImagesUrls(String partnerReqId){
-        ListObjectsV2Result uri = s3Client.listObjectsV2(bucketName,partnerReqId);
+    public List<String> getImagesUrls(UUID partnerReqId) {
+        ListObjectsV2Result uri = s3Client.listObjectsV2(bucketName, partnerReqId.toString());
         return urlBuilder.returnList(uri.getObjectSummaries());
     }
 

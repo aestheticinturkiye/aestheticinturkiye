@@ -10,17 +10,18 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, String>, JpaSpecificationExecutor<FindPartnerRequest> {
-
-    @EntityGraph(value = "findPartnerRequest.all", type = EntityGraph.EntityGraphType.LOAD)
-    List<FindPartnerRequest> getByClientId(final String clientId);
+public interface FindPartnerRequestRepository extends JpaRepository<FindPartnerRequest, UUID>, JpaSpecificationExecutor<FindPartnerRequest> {
 
     @EntityGraph(value = "findPartnerRequest.all", type = EntityGraph.EntityGraphType.LOAD)
-    FindPartnerRequest getById(final String id);
+    List<FindPartnerRequest> getByClientId(final UUID clientId);
+
+    @EntityGraph(value = "findPartnerRequest.all", type = EntityGraph.EntityGraphType.LOAD)
+    FindPartnerRequest getById(final UUID id);
 
     @EntityGraph(value = "findPartnerRequest.all")
-    Optional<FindPartnerRequest> findById(final String id);
+    Optional<FindPartnerRequest> findById(final UUID id);
 
     @Override
     @EntityGraph(value = "findPartnerRequest.all", type = EntityGraph.EntityGraphType.LOAD)

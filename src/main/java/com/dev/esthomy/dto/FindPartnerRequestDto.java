@@ -6,11 +6,12 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 public class FindPartnerRequestDto {
-    private String id;
+    private UUID id;
     private String aestheticType;
     private Date preferedDate;
     private String preferredCity;

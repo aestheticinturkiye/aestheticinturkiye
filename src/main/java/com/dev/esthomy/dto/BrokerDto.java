@@ -4,10 +4,12 @@ import com.dev.esthomy.models.Broker;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 @Builder
 public class BrokerDto {
-    private String id;
+    private UUID id;
     private String name;
     private String surname;
     private String email;

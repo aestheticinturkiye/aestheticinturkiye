@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NamedEntityGraph(name = "findPartnerRequest.all", attributeNodes = {@NamedAttributeNode("client"), @NamedAttributeNode("proposals")})
@@ -17,8 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 public class FindPartnerRequest {
     @Id
-    @GeneratedValue(generator = "UUID")
-    private String id;
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")

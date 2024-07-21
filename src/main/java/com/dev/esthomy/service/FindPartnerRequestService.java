@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class FindPartnerRequestService {
     private final StorageService storageService;
     private final FindPartnerRequestDataAdapter findPartnerRequestDataAdapter;
 
-    public CreateFindPartnerRequestResponse create(final String id,
+    public CreateFindPartnerRequestResponse create(final UUID id,
                                                    final MemberRole role,
                                                    final CreateFindPartnerRequest request, List<MultipartFile> files) {
         if (role.equals(MemberRole.BROKER)) throw new BusinessException(BusinessError.INVALID_ROLE);
@@ -52,7 +53,7 @@ public class FindPartnerRequestService {
                 .build();
     }
 
-    public GetFindPartnerRequestsPageable get(final String id,
+    public GetFindPartnerRequestsPageable get(final UUID id,
                                               final int pageSize,
                                               final int pageNumber) {
         final GetFindPartnerRequestsPageableAdapterResponse getFindPartnerRequestsPageableAdapterResponse = findPartnerRequestDataAdapter.getClientFindPartnerRequestPageable(id, pageSize, pageNumber);
@@ -98,15 +99,15 @@ public class FindPartnerRequestService {
 
     }
 
-    private ClientDto getClient(final String clientId) {
+    private ClientDto getClient(final UUID clientId) {
         return clientService.getById(clientId);
     }
 
-    public FindPartnerRequest getById(final String findPartnerRequestId) {
+    public FindPartnerRequest getById(final UUID findPartnerRequestId) {
         return findPartnerRequestRepository.getById(findPartnerRequestId);
     }
 
-    public FindPartnerRequestDto getFindPartnerRequest(String id) {
+    public FindPartnerRequestDto getFindPartnerRequest(UUID id) {
         return findPartnerRequestRepository.findById(id)
                 .map(FindPartnerRequestDto::toDto)
                 .orElseThrow(() -> new BusinessException(BusinessError.INVALID_ROLE));

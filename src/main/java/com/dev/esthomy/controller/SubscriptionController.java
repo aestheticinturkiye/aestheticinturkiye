@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/subscribe")
@@ -25,7 +27,7 @@ public class SubscriptionController {
 
     @PutMapping("{id}")
     public ResponseEntity<UpdateSubscriptionResponse> update(@RequestBody final UpdateSubscriptionRequest request,
-                                                             @PathVariable("id") final String id) {
+                                                             @PathVariable("id") final UUID id) {
         log.info(request.toString());
         return ResponseEntity.ok().body(subscriptionService.update(request, id));
     }

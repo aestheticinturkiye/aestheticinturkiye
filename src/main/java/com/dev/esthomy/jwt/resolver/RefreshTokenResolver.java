@@ -7,6 +7,8 @@ import io.jsonwebtoken.JwtParser;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class RefreshTokenResolver {
     private final JwtParser jwtParser;
@@ -20,7 +22,7 @@ public class RefreshTokenResolver {
         return JwtClaims.builder()
                 .email(claims.get("email", String.class))
                 .role(MemberRole.valueOf(claims.get("role", String.class)))
-                .id(claims.get("id", String.class))
+                .id(claims.get("id", UUID.class))
                 .build();
     }
 }

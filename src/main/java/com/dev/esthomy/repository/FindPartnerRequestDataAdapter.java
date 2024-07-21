@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class FindPartnerRequestDataAdapter {
                 .build();
     }
 
-    public GetFindPartnerRequestsPageableAdapterResponse getClientFindPartnerRequestPageable(final String clientId,
+    public GetFindPartnerRequestsPageableAdapterResponse getClientFindPartnerRequestPageable(final UUID clientId,
                                                                                              final int pageSize,
                                                                                              final int pageNumber) {
         final Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());

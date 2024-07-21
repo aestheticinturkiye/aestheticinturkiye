@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @NamedEntityGraph(name = "proposal.all", attributeNodes = {
@@ -20,8 +22,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class Proposal {
     @Id
-    @GeneratedValue(generator = "UUID")
-    private String id;
+    @GeneratedValue
+    @UuidGenerator
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "find_partner_request_id")
@@ -31,7 +34,7 @@ public class Proposal {
     @JoinColumn(name = "broker_id")
     private Broker broker;
 
-    private String clientId;
+    private UUID clientId;
 
     private BigDecimal price;
 

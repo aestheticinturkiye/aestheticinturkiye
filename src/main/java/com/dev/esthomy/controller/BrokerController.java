@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/v1/broker")
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class BrokerController {
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<GetBrokerResponse> getBroker(@PathVariable("id") final String id) {
+    public ResponseEntity<GetBrokerResponse> getBroker(@PathVariable("id") final UUID id) {
         return ResponseEntity.ok().body(brokerService.getBroker(id));
     }
 }

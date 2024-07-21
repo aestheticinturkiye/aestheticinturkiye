@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/find-partner-request")
@@ -23,7 +24,7 @@ public class FindPartnerRequestController {
 
     @PostMapping
     public ResponseEntity<CreateFindPartnerRequestResponse> create(@RequestPart("partnerReq") String request,
-                                                                   @RequestHeader("id") final String id,
+                                                                   @RequestHeader("id") final UUID id,
                                                                    @RequestHeader("member-role") final MemberRole role,
                                                                    @RequestPart("files") List<MultipartFile> files) {
         final CreateFindPartnerRequest createFindPartnerRequest = objectConverter.convert(request);
@@ -31,7 +32,7 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping
-    public ResponseEntity<GetFindPartnerRequestsPageable> get(@RequestHeader("id") final String id,
+    public ResponseEntity<GetFindPartnerRequestsPageable> get(@RequestHeader("id") final UUID id,
                                                               @RequestParam(value = "size", defaultValue = "20") final int pageSize,
                                                               @RequestParam(value = "page", defaultValue = "0") final int pageNumber) {
         return ResponseEntity.ok().body(findPartnerRequestService.get(id, pageSize, pageNumber));
@@ -45,7 +46,7 @@ public class FindPartnerRequestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FindPartnerRequestDto> getFindPartnerRequest(@PathVariable("id") final String id) {
+    public ResponseEntity<FindPartnerRequestDto> getFindPartnerRequest(@PathVariable("id") final UUID id) {
         return ResponseEntity.ok().body(findPartnerRequestService.getFindPartnerRequest(id));
     }
 }

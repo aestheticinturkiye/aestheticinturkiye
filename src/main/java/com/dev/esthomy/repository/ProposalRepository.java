@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface ProposalRepository extends JpaRepository<Proposal, String> {
-    List<Proposal> getByBrokerId(final String brokerId);
+public interface ProposalRepository extends JpaRepository<Proposal, UUID> {
+    List<Proposal> getByBrokerId(final UUID brokerId);
 
-    List<Proposal> getByClientId(final String clientId);
+    List<Proposal> getByClientId(final UUID id);
 
     @Override
     @EntityGraph(value = "proposal.all", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Proposal> findById(final String id);
+    Optional<Proposal> findById(final UUID id);
 }
