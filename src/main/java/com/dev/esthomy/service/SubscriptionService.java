@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.UUID;
 
 import static com.dev.esthomy.exception.error.BusinessError.SUBSCRIPTION_NOT_FOUND;
 
@@ -45,7 +44,7 @@ public class SubscriptionService {
                 .build();
     }
 
-    public UpdateSubscriptionResponse update(final UpdateSubscriptionRequest request, final UUID id) {
+    public UpdateSubscriptionResponse update(final UpdateSubscriptionRequest request, final String id) {
 
         final Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(SUBSCRIPTION_NOT_FOUND));

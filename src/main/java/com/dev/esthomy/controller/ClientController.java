@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/v1/client")
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class ClientController {
     }
 
     @GetMapping()
-    public ResponseEntity<GetClientResponse> getClient(@RequestHeader("id") final UUID id) {
+    public ResponseEntity<GetClientResponse> getClient(@RequestHeader("id") final String id) {
         return ResponseEntity.ok().body(clientService.getClient(id));
     }
 }

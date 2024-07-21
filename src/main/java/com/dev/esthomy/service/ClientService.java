@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +77,7 @@ public class ClientService {
                 .build()).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
     }
 
-    public ClientDto getById(final UUID id) {
+    public ClientDto getById(final String id) {
         final Optional<Client> optionalClient = clientRepository.findById(id);
         return optionalClient.map(b -> ClientDto.builder()
                 .id(b.getId())
@@ -90,14 +89,14 @@ public class ClientService {
                 .build()).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
     }
 
-    public GetClientResponse getClient(final UUID id) {
+    public GetClientResponse getClient(final String id) {
         final Client client = clientRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.INVALID_CREDENTIAL));
         return GetClientResponse.builder()
                 .client(ClientDto.toDtoWithFindPartnerRequest(client))
                 .build();
     }
 
-    public Client findById(final UUID id) {
+    public Client findById(final String id) {
         return clientRepository.findById(id).orElseThrow(() -> new BusinessException(BusinessError.CLIENT_NOT_FOUND));
     }
 }

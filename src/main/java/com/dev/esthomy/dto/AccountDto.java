@@ -4,12 +4,10 @@ import com.dev.esthomy.models.enums.MemberRole;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @Builder
 public class AccountDto {
-    private UUID id;
+    private String id;
     private String name;
     private String surname;
     private int age;

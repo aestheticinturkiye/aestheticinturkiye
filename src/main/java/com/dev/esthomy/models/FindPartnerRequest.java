@@ -9,7 +9,6 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @NamedEntityGraph(name = "findPartnerRequest.all", attributeNodes = {@NamedAttributeNode("client"), @NamedAttributeNode("proposals")})
@@ -21,7 +20,7 @@ public class FindPartnerRequest {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")

@@ -7,12 +7,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @Builder
 public class ProposalDto {
-    private UUID id;
+    private String id;
     private BigDecimal price;
     private Date operationDate;
     private String accommodation;

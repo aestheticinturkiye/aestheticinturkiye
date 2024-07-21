@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -19,7 +18,7 @@ public class Broker {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     private String name;
     private String surname;

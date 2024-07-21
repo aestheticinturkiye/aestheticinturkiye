@@ -9,7 +9,6 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @NamedEntityGraph(name = "proposal.all", attributeNodes = {
@@ -24,7 +23,7 @@ public class Proposal {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "find_partner_request_id")
@@ -34,7 +33,7 @@ public class Proposal {
     @JoinColumn(name = "broker_id")
     private Broker broker;
 
-    private UUID clientId;
+    private String clientId;
 
     private BigDecimal price;
 

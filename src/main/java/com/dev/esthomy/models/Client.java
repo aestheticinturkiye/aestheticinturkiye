@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @NamedEntityGraph(name = "client.findPartnerRequest", attributeNodes = {@NamedAttributeNode("findPartnerRequests")})
@@ -20,7 +19,7 @@ public class Client {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     private String name;
     private String surname;

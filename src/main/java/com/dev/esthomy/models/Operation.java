@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.UUID;
-
 @Entity
 @Data
 @Builder
@@ -19,7 +17,7 @@ public class Operation {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     @OneToOne
     @JoinColumn(name = "proposal_id")

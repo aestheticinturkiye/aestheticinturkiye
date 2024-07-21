@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.UUID;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,7 +18,7 @@ public class Credential {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     private String email;
 

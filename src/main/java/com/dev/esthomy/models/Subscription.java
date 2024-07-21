@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.UUID;
-
 @Data
 @Entity
 @Builder
@@ -20,7 +18,7 @@ public class Subscription {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;
+    private String id;
 
     private String email;
 
