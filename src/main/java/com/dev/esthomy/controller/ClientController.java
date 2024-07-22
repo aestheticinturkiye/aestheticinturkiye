@@ -23,7 +23,7 @@ public class ClientController {
         return ResponseEntity.ok().body(clientService.create(request));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<GetClientResponse> getClient(@RequestHeader("id") final String id) {
         return ResponseEntity.ok().body(clientService.getClient(id));
     }
