@@ -38,23 +38,18 @@ public class SubscriptionService {
             log.error("Failed to send email. Error: " + e.getMessage());
         }
 
+
         return CreateSubscriptionResponse.builder()
                 .id(savedSubscription.getId())
                 .build();
     }
 
     public UpdateSubscriptionResponse update(final UpdateSubscriptionRequest request, final String id) {
+
         final Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(SUBSCRIPTION_NOT_FOUND));
 
-        // Güncellenmiş kod: AestheticType.fromValue metodu tür dönüştürme yapmalı
-        AestheticType aestheticType = AestheticType.fromValue(request.getType());
-        if (aestheticType == null) {
-            log.error("Invalid aesthetic type: {}", request.getType());
-            throw new BusinessException("Invalid aesthetic type");
-        }
-
-        subscription.setAestheticType(aestheticType);
+        subscription.setAestheticType(AestheticType.fromValue(request.getType()));
 
         final Subscription updatedSubscription = subscriptionRepository.save(subscription);
 

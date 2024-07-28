@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UpdateSubscriptionRequest {
-    private String type;  // Burada "type" alanı kullanılmakta
+    private int type;
 }
