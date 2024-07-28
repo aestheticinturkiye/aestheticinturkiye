@@ -59,4 +59,4 @@ jobs:
             -e SPRING_DATASOURCE_USERNAME=esthomyuser \
             -e SPRING_DATASOURCE_PASSWORD=esthomy2000* \
             mertatag123/backendv1:latest
-          docker network connect my-network backend
+          sudo docker network connect my-network backend
