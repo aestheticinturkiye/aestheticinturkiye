@@ -22,9 +22,9 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/esthomy_db
-    username: esthomyuser
-    password: esthomy2000*
+    url: jdbc:postgresql://34.44.75.158:5433/stage_database
+    username: esthomystagedb
+    password: Easyolsun123.
 #  mail:
 #    host: smtp.gmail.com
 #    port: 587
