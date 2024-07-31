@@ -48,7 +48,7 @@ spring:
           auth: true
           starttls:
             enable: true
-    from: noreply@esthomy.com
+    
 
   servlet:
     multipart:
