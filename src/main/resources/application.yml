@@ -40,14 +40,15 @@ spring:
   mail:
     host: smtp-relay.brevo.com
     port: 587
-    username: 799b4f001@smtp-brevo.com
+    username: 799b4f002@smtp-brevo.com
     password: xCR9BATMUqHXzFcY
     properties:
       mail:
         smtp:
           auth: true
-          ssl:
+          starttls:
             enable: true
+    from: noreply@esthomy.com
 
   servlet:
     multipart:
