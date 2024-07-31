@@ -38,10 +38,10 @@ spring:
 #            enable: true
 
   mail:
-    host: mail.privateemail.com
-    port: 465
-    username: info@esthomy.com
-    password: Easyolsun123.
+    host: smtp-relay.brevo.com
+    port: 587
+    username: 799b4f001@smtp-brevo.com
+    password: Mshx2PzEmpSLHvrb
     properties:
       mail:
         smtp:
