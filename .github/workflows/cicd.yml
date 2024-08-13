@@ -52,6 +52,8 @@ jobs:
       - name: Run Backend Docker Container
         run: |
           sudo docker run -d \
+            --restart unless-stopped \
+            --network my-network \
             -p 8080:8080 \
             --name backend \
             --link postgres1:postgres \
@@ -59,4 +61,4 @@ jobs:
             -e SPRING_DATASOURCE_USERNAME=esthomyuser \
             -e SPRING_DATASOURCE_PASSWORD=esthomy2000* \
             mertatag123/backendv1:latest
-          sudo docker network connect my-network backend
+          
