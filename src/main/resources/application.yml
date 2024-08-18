@@ -40,7 +40,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 465
-    username: esthomyaesthetic@gmail.com
+    username: esthomyaesthetic
     password: zylv usbc xsqp vljk
     properties:
       mail:
