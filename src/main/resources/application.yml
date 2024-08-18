@@ -46,7 +46,7 @@ spring:
       mail:
         smtp:
           auth: true
-    from: noreply@esthomy.com
+          from: noreply@esthomy.com
 
     
 
