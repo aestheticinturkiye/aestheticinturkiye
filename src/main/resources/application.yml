@@ -38,17 +38,17 @@ spring:
 #            enable: true
 
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: esthomyaesthetic
-    password: zylv usbc xsqp vljk
-    properties:
+     host: smtp.gmail.com
+      port: 587
+      username: esthomyaesthetic
+      password: zylv usbc xsqp vljk
+      properties:
       mail:
-        smtp:
-          auth: true
-          from: noreply@esthomy.com
-
-    
+      smtp:
+        auth: true
+        starttls:
+          enable: true         
+                          
 
   servlet:
     multipart:
