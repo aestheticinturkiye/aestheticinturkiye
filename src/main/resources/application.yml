@@ -38,16 +38,18 @@ spring:
 #            enable: true
 
   mail:
-    host: smtp-relay.brevo.com
-    port: 587
-    username: 799b4f002@smtp-brevo.com
-    password: xCR9BATMUqHXzFcY
+    host: smtp.gmail.com
+    port: 465
+    username: esthomyaesthetic@gmail.com
+    password: zylv usbc xsqp vljk
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+    from: noreply@esthomy.com
+
     
 
   servlet:
