@@ -1,0 +1,64 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Build Backend Project
+        run: mvn clean install -DskipTests
+
+      - name: Login to Docker Hub
+        run: sudo docker login -u mertatag123 -p Mertatag123.
+
+      - name: Build Backend Docker Image
+        run: sudo docker build -t mertatag123/backendv1 .
+
+      - name: Push Backend Docker Image
+        run: sudo docker push mertatag123/backendv1:latest
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted]
+    steps:
+      - name: Pull Backend Image From Docker Hub
+        run: sudo docker pull mertatag123/backendv1:latest
+
+      - name: Pull Client Image From Docker Hub
+        run: sudo docker pull mertatag123/clientv1:latest
+
+      - name: Stop and Remove Old Backend Container
+        run: sudo docker rm -f backend || true # Remove old container if exists
+
+      - name: Remove Old Backend Image
+        run: |
+          old_image=$(sudo docker images mertatag123/backendv1 --format "{{.ID}}" | tail -n +2)
+          if [ ! -z "$old_image" ]; then
+            sudo docker rmi $old_image
+          fi
+
+      - name: Run Backend Docker Container
+        run: |
+          sudo docker run -d \
+            --restart unless-stopped \
+            --network my-network \
+            -p 8080:8080 \
+            --name backend \
+            --link postgres1:postgres \
+            -e SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/esthomy_db \
+            -e SPRING_DATASOURCE_USERNAME=esthomyuser \
+            -e SPRING_DATASOURCE_PASSWORD=esthomy2000* \
+            mertatag123/backendv1:latest
+          
