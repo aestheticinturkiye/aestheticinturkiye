@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // GitHub PAT ve kullanıcı adı ile giriş yapacağınız bilgileri tanımlayın
-        GITHUB_USERNAME = credentials('aestheticinturkiye')
-        GITHUB_PAT = credentials('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')
+        GITHUB_CREDENTIALS = credentials('github')
     }
 
     stages {
@@ -12,7 +10,7 @@ pipeline {
             steps {
                 // Kaynak kodu klonla
                 git branch: 'main', url: 'https://github.com/aestheticinturkiye/aestheticinturkiye',
-                    credentialsId: 'github-username-pat'
+                   credentialsId: 'github'
             }
         }
 
