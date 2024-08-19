@@ -14,14 +14,6 @@ pipeline {
             }
         }
 
-        stage('Setup Java') {
-            steps {
-                // Java kurulumu (Temurin 21 kullanımı)
-                sh 'sudo apt-get update'
-                sh 'sudo apt-get install openjdk-21-jdk -y'
-            }
-        }
-
         stage('Build Backend Project') {
             steps {
                 // Maven kullanarak projeyi build et
